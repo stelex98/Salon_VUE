@@ -18,6 +18,12 @@ router.get('/read', (req, res) => {
 
 //--------POST--------
 
+
+router.post('/add', (req, res) => {
+    console.log(req.body);
+    
+});
+
 //---------PUT--------
 
 //-------DELETE-------
