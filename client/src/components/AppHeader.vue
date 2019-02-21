@@ -112,7 +112,8 @@ import formReg      from "@/components/forms/formRegistration";
 import formAuth     from "@/components/forms/formAuthorization";
 import { mapState } from "vuex";
 import apiService   from "../../request/service"
-import apiReview   from "../../request/review"
+import apiReview    from "../../request/review"
+import apiAuthe     from "../../request/authentication"
 
 export default {
   components: {
@@ -133,6 +134,20 @@ export default {
   async created () {
     let res = await apiService.readByGroup();
     console.log('res ', res.data);
+
+    let user = {
+      login: 'petr',
+      password: 'petr',
+      role: false,
+      name: 'Petr',
+      surname: 'Arh',
+      date_birth: '1997-02-02',
+      mail: 'cdscds',
+      phone: '+375336980211',
+      photo:'fdsf'
+    };
+    let a = await apiAuthe.registration(user);
+    console.log(a)
   }
 
 };

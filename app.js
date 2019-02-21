@@ -1,9 +1,8 @@
 const express        = require("express");
 const bodyParser     = require("body-parser");
-const router         = require('./routes/index');
+const router_authe   = require('./routes/authentication');
 const router_service = require('./routes/service');
 const router_review  = require('./routes/review');
-const router_authorization = require('./routes/authorization');
 const env            = require('./config/env');
 const redis          = require("redis");
 const cookieParser   = require('cookie-parser');
@@ -38,8 +37,7 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.use('/', router);
-//app.use('/authorization', router_authorization);
+app.use('/authentication', router_authe);
 app.use('/service', router_service);
 app.use('/review', router_review);
 
