@@ -1,7 +1,7 @@
 const express  = require('express');
 const queries  = require('../db/queries/authorization');
 const CryptoJS = require("crypto-js");
-const env      = require('.././config/env');
+const env      = require('../config/env');
 
 
 const router   = express.Router();
@@ -12,6 +12,7 @@ router.post('/login', (req, res) => {
 	queries.checkLogin(req.body.login)
 	.then(data => {
 		if(data[0] !== undefined){
+			console.log(data);
 			// if(checkPassword(data[0].password, data[0].salt, req.body.password, req.body.salt)){
 			// 	req.session.login = data[0].login;
 			// 	req.session.key = data[0].id;
@@ -35,3 +36,5 @@ function checkPassword(crypt_pass, user_salt, pass, salt){
 	else
 		return false;
 }
+
+module.exports = router;
