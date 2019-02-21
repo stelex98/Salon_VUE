@@ -1,10 +1,18 @@
 const express  = require('express');
-const queries  = require('../db/queries/authorization');
+const queries  = require('../db/queries/authentication');
 const CryptoJS = require("crypto-js");
 const env      = require('../config/env');
 
 
 const router   = express.Router();
+
+router.post('/login/check', (req, res) => {
+    queries.checkLogin(req.body.login)
+	.then(data => {
+		res.send( data[0] !== undefined ? true : false );
+	})
+	.catch(error => console.log(`Error: ${error}`));
+});
 
 //авторизация
 router.post('/login', (req, res) => {

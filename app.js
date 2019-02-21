@@ -1,6 +1,6 @@
 const express        = require("express");
 const bodyParser     = require("body-parser");
-const router_autho   = require('./routes/authorization');
+const router_authe   = require('./routes/authentication');
 const router_service = require('./routes/service');
 const router_review  = require('./routes/review');
 const env            = require('./config/env');
@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.use('/authorization', router_autho);
+app.use('/authentication', router_authe);
 app.use('/service', router_service);
 app.use('/review', router_review);
 
