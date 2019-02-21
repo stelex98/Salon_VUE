@@ -10,7 +10,11 @@ apiAuthe.checkLogin = function (login) {
     });
 }
 
-apiAutho.authorization = function (login, password) {
+apiAuthe.registration = function (user) {
+    return axios.post(`${url}/sign_up`, user);
+}
+
+apiAuthe.authorization = function (login, password) {
     return axios.post(`${url}/login`, {
         login   : login,
         password: password

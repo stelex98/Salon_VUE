@@ -20,7 +20,17 @@ function checkLogin(login) {
 
 //-----------------INSERT----------------
 
+function addUser(user){
+	return knex.insert(user).returning('id').into('public.user');
+}
 
+function addProfile(profile){
+	return knex.insert(profile).returning('id').into('profile');
+}
+
+function addClient(client){
+	return knex.insert(client).returning('*').into('client');
+}
 
 //----------------UPDATE------------------
 
@@ -33,5 +43,8 @@ function checkLogin(login) {
 
 module.exports = {
     checkLogin,
+    addUser,
+    addProfile,
+    addClient,
     
 };
