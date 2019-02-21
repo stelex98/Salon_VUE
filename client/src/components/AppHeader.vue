@@ -135,19 +135,19 @@ export default {
     let res = await apiService.readByGroup();
     console.log('res ', res.data);
 
-    let user = {
-      login: 'petr',
-      password: 'petr',
-      role: false,
-      name: 'Petr',
-      surname: 'Arh',
-      date_birth: '1997-02-02',
-      mail: 'cdscds',
-      phone: '+375336980211',
-      photo:'fdsf'
-    };
-    let a = await apiAuthe.registration(user);
-    console.log(a)
+    // let user = {
+    //   login: 'petr',
+    //   password: 'petr',
+    //   role: false,
+    //   name: 'Petr',
+    //   surname: 'Arh',
+    //   date_birth: '1997-02-02',
+    //   mail: 'cdscds',
+    //   phone: '+375336980211',
+    //   photo:'fdsf'
+    // };
+    // let a = await apiAuthe.registration(user);
+    // console.log(a)
   }
 
 };

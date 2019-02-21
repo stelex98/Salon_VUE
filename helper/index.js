@@ -29,5 +29,15 @@ helper.writeImageInFile = function (imageBase64_withMetaData, nameFile) {
   return "picture/photo_profile/" + `${nameFile}.${typeFile}`;
 };
 
+helper.checkPassword = function (crypt_pass, user_salt, pass, salt){
+	let bytes  = CryptoJS.AES.decrypt(crypt_pass, user_salt+global_salt);
+	let password = bytes.toString(CryptoJS.enc.Utf8);
+	let hash = CryptoJS.PBKDF2(password, salt, { keySize: 128/32 });
+	if(hash.toString() === pass)
+		return true;
+	else
+		return false;
+}
+
 
 module.exports = helper;
