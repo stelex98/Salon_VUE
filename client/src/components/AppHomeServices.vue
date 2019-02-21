@@ -1,29 +1,54 @@
 <template>
-  <div>
-    <v-container fluid>
-      <v-layout row wrap class="myLayout">
-        <v-flex justify-start v-for="(item, i) in mainServices" :key="`mainServices${i}`">
-          <v-card hover height="450px" width="240px">
-            <v-img height="200px" :src="item.src" aspect-ratio="2.75"></v-img>
-
-            <v-card-title primary-title>
-              <div>
-                <h3 class="headline">{{item.title}}</h3>
-                <span
-                  v-for="(item, i) in mainServices[i].servicesArr"
-                  :key="`asd${i}`"
-                  class="grey--text"
+    <div>
+        <v-container 
+            fluid
+        >
+            <v-layout
+                class="myLayout" 
+                row 
+                wrap 
+            >
+                <v-flex 
+                    v-for="(item, i) in mainServices" 
+                    :key="`mainServices${i}`"
+                    justify-start 
                 >
-                  <br>
-                  &mdash; {{item}}
-                </span>
-              </div>
-            </v-card-title>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </div>
+                    <v-card 
+                        height ="450px" 
+                        width  ="240px"
+                        @click ="resetScroll"
+                        to="/services"
+                        hover 
+                    >
+                        <v-img 
+                            height="200px" 
+                            :src="item.src" 
+                            aspect-ratio="2.75"
+                        ></v-img>
+                            <v-card-title 
+                                primary-title
+                            >
+                                <div>
+                                    <h3 
+                                        class="headline"
+                                    >
+                                        {{item.title}}
+                                    </h3>
+                                    <span
+                                        class="grey--text"
+                                        v-for="(item, i) in mainServices[i].servicesArr"
+                                        :key="`asd${i}`"
+                                    >
+                                    <br>
+                                    &mdash; {{item}}
+                                    </span>
+                                </div>
+                            </v-card-title>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </div>
 </template>
 
 <script>
@@ -34,6 +59,13 @@ export default {
     ...mapState("homeServices", {
       mainServices: "dataHomeServices"
     })
+  },
+  methods: {
+    resetScroll(){
+        setTimeout(function(){
+            window.scrollTo(0, 0);
+        }, 1);
+      }
   }
 };
 </script>
