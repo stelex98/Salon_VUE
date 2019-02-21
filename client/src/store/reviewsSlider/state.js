@@ -27,7 +27,17 @@ export default {
         },
         {
             reviewsText: "Салон очень понравился, внимательное отношение к клиентам!",
-            namePearson: "Егор Дружинин",
+            namePearson: "Хлебест дмитрий",
+            src: "https://visavis.by/sites/all/themes/visavis2/images/forms.jpg"
+        },
+        {
+            reviewsText: "Салон очень понравился, внимательное отношение к клиентам!",
+            namePearson: "Александр Лукашенко",
+            src: "https://visavis.by/sites/all/themes/visavis2/images/forms.jpg"
+        },
+        {
+            reviewsText: "Салон очень понравился, внимательное отношение к клиентам!",
+            namePearson: "Владимир Путин",
             src: "https://visavis.by/sites/all/themes/visavis2/images/forms.jpg"
         }
     ],
