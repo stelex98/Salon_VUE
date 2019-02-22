@@ -1,5 +1,7 @@
 const env      = require('../config/env');
 const CryptoJS = require("crypto-js");
+const path     = require('path');
+const fs       = require('fs');
 
 
 const helper = {};
@@ -13,12 +15,13 @@ helper.cryptPass = function (password){
 }
 
 helper.writeImageInFile = function (imageBase64_withMetaData, nameFile) {
+
   let acceptType = [ 'png', 'jpg', 'jpeg' ];
   let typeFile = imageBase64_withMetaData.match(/^data:(.*?)\/([a-z]+);base64,(.+)$/)[2];
   if(!typeFile || acceptType.indexOf(typeFile) === -1) throw Error();
   let imageBase64_withoutMetaData = imageBase64_withMetaData.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/)[2];
   let bitmap = new Buffer(imageBase64_withoutMetaData , 'base64');
-  let pathImage = path.join(path_dir, `${nameFile}.${typeFile}`);
+  let pathImage = path.join(env.DIR_PHOTO, `${nameFile}.${typeFile}`);
   fs.writeFile(pathImage, bitmap, 'base64', function(err) {
     if (err) {
       console.log('Fail', err);

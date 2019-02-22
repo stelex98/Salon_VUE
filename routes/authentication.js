@@ -23,8 +23,9 @@ router.post('/sign_up', async function(req, res) {
 			'salt'    : crypt.salt
 		};
 		let id_user = (await queries.addUser(user))[0];
-		let photo = 'grvfsvrsf';
-		//let photo = helper.writeImageInFile(req.body.photo, req.body.login);
+
+		let photo = helper.writeImageInFile(req.body.photo, req.body.login);
+		
 		let profile = {
 			'name'      : req.body.name,
 			'surname'   : req.body.surname,

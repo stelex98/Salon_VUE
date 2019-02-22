@@ -130,7 +130,6 @@ export default {
       menuItems       : 'dataMenuItems',
       listAdressPhone : 'dataListAdressPhone'
     }),
-<<<<<<< HEAD
   },
   async created () {
     let res = await apiService.readByGroup();
@@ -149,8 +148,6 @@ export default {
     // };
     // let a = await apiAuthe.registration(user);
     // console.log(a)
-=======
->>>>>>> master
   }
 };
 </script>
