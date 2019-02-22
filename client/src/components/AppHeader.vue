@@ -112,7 +112,8 @@ import formReg      from "@/components/forms/formRegistration";
 import formAuth     from "@/components/forms/formAuthorization";
 import { mapState } from "vuex";
 import apiService   from "../../request/service"
-import apiReview   from "../../request/review"
+import apiReview    from "../../request/review"
+import apiAuthe     from "../../request/authentication"
 
 export default {
   components: {
@@ -129,12 +130,7 @@ export default {
       menuItems       : 'dataMenuItems',
       listAdressPhone : 'dataListAdressPhone'
     }),
-  },
-  async created () {
-    let res = await apiService.readByGroup();
-    console.log('res ', res.data);
   }
-
 };
 </script>
 

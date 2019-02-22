@@ -16,7 +16,7 @@
                 <v-text-field label="Фамилия" :error="checkSecondName" v-model = "secondName"></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field label="Login" v-model = "login" :error = "checkLogin" @blur="checkLoginServ"></v-text-field>
+                <v-text-field label="Login" v-model = "login" :error = "checkLogin" :hint = information></v-text-field>
               </v-flex>
               <v-flex xs12>
                 <v-text-field label="Email" v-model = "email" :error = "checkEmail" hint="Например: stelex98@mail.ru" required></v-text-field>
@@ -72,11 +72,12 @@
           <v-btn 
             color="blue darken-1" 
             flat 
-            @click="dialog = false"
+            @click="closeWindow"
             >Закрыть</v-btn>
             <v-btn color="blue darken-1" 
                 flat
                 @click="createUser"
+                :disabled = "checkAllField"
             >Зарегистрироваться</v-btn>
         </v-card-actions>
       </v-card>
@@ -85,9 +86,9 @@
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex'
+import { mapMutations, mapState, mapActions, mapGetters } from 'vuex'
 import uploadButton from "@/components/forms/fileUploadButton.vue";
-
+import apiAuthe from "../../../request/authentication"
 
 export default {
     components: {
@@ -96,15 +97,19 @@ export default {
     computed: {
         ...mapState('registrationData', ['currentDataImageBase64']),
         checkName(){ 
-            return this.name.match(/[a-z]/i) 
+            return this.name.match(/[a-zA-z0-9]/i) 
                 ?  true 
                 :  false;
         },
         checkSecondName(){
-            return this.secondName.match(/[a-z]/i);
+            return this.secondName.match(/[a-zA-z0-9]/i) 
+                ?  true 
+                :  false;
         },
         checkLogin(){
-            return !this.login.length > 0
+            this.checkLoginServ();
+
+            return this.checkErrorS;
         },
         checkEmail(){
             let re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -116,6 +121,13 @@ export default {
         },
         checkPassword(){
             return !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/.test(this.password);
+        },
+        checkAllField(){
+            let check = this.name.length === 0 || this.secondName.length === 0 || this.login.length === 0 || this.email.length === 0 
+            || this.phoneNumber.length === 0 || this.date === null || this.checkName || this.checkSecondName || this.checkLogin || 
+            this.checkEmail || this.checkPhoneNumber || this.checkPassword;
+
+            return check;
         }
     },
     data() {
@@ -130,8 +142,9 @@ export default {
             email        : '',
             phoneNumber  : '',
             password     : '',
-            dataImg      : this.currentDataImageBase64,
-            dateBirthDay : ''
+            dataOfPhoto  : '',
+            information  : 'Поле не должно быть пустым',
+            checkErrorS  : false
         }
     },
     watch: {
@@ -140,17 +153,57 @@ export default {
         }
     },
     methods: {
-        ...mapActions('registrationData', ['clearCurrentDataImg']),
+        ...mapActions('registrationData', ['clearCurrentDataImg', 'addCurrentDataImg']),
+        ...mapGetters('registrationData', ['returnCurrentDataImageBase64']),
 
         save(date) {
             this.$refs.menu.save(date);
         },
-        createUser() {
+        async createUser() {
+            this.dataOfPhoto = this.returnCurrentDataImageBase64();
+
+            let user = {
+                login      : this.login,
+                password   : this.password,
+                role       : false,
+                name       : this.name,
+                surname    : this.secondName,
+                date_birth :  this.date,
+                mail       : this.email,
+                phone      : `+${this.phoneNumber}`,
+                photo      : this.dataOfPhoto
+            };
+            let requestToCreateUser = await apiAuthe.registration(user);
+
             this.dialog = false;
             this.clearCurrentDataImg('');
+            this.resetData();
         },
-        checkLoginServ(){
-            console.log(this.login);
+        async checkLoginServ(){
+            let flag  = await apiAuthe.checkLogin(this.login);
+
+            if (flag.data){
+                this.information = 'Такой логин уже существует';
+                this.checkErrorS = true;
+            } else {
+                this.information = '';
+                this.checkErrorS = false
+            }
+        },
+        resetData(){
+            this.login       = '';
+            this.password    = '';
+            this.name        = '';
+            this.secondName  = '';
+            this.date        = null;
+            this.email       = '';
+            this.phoneNumber = '';
+            this.dataOfPhoto = '';
+        },
+        closeWindow(){
+            this.dialog = false;
+            this.clearCurrentDataImg('');
+            this.resetData();
         }
     }
 };

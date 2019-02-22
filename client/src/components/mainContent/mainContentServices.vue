@@ -123,8 +123,6 @@ export default {
   },
   mounted(event) {
     this.selected = this.dataServices;
-
-    console.log(event);
   },
   methods: {
     returnDescribe(ev) {
