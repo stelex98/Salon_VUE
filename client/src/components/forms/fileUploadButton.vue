@@ -4,7 +4,7 @@
       <v-layout row>
         <v-flex xs12 md12 class="text-xs-center text-sm-center text-md-center text-lg-center">
           <v-text-field
-            label="Select Image*"
+            label="Select Image"
             hint="Загружайте изображения формата .png или .jpeg"
             @click="pickFile"
             v-model="imageName"
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   data() {
     return {
@@ -37,6 +39,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions('registrationData', [
+        'addCurrentDataImg'
+    ]),
     pickFile() {
       this.$refs.image.click();
     },
@@ -53,7 +58,9 @@ export default {
         fr.addEventListener("load", () => {
           this.imageUrl = fr.result;
           this.imageFile = files[0];
-          console.log(this.imageUrl, this.imageFile);
+
+          this.addCurrentDataImg(this.imageUrl);
+          //console.log(this.imageUrl, this.imageFile);
         });
       } else {
         this.imageName = "";
