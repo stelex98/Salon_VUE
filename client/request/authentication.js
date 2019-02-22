@@ -19,7 +19,5 @@ apiAuthe.authorization = function (requisites) {
 }
 
 
-
-
 export default apiAuthe;
 

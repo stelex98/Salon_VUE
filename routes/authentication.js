@@ -14,48 +14,59 @@ router.post('/login/check', (req, res) => {
 });
 
 router.post('/sign_up', async function(req, res) {
-	let crypt   = helper.cryptPass(req.body.password);
-	let user    = {
-		'login'   : req.body.login,
-		'password': crypt.pass,
-		'role'    : req.body.role,
-		'salt'    : crypt.salt
-	};
-	let id_user = await queries.addUser(user)[0];
-	let photo = 'grvfsvrsf';
-	//let photo = helper.writeImageInFile(req.body.photo, req.body.login);
-	let profile = {
-		'name'      : req.body.name,
-		'surname'   : req.body.surname,
-		'date_birth': req.body.date_birth,
-		'mail'      : req.body.mail,
-		'phone'     : req.body.phone,
-		'photo'     : photo
-	};
-	let id_profile = await queries.addProfile(profile)[0];
-	
-	let client     = {
-		'id_profile': id_profile,
-		'id_user'   : id_user
+	try{
+		let crypt   = helper.cryptPass(req.body.password);
+		let user    = {
+			'login'   : req.body.login,
+			'password': crypt.pass,
+			'role'    : req.body.role,
+			'salt'    : crypt.salt
+		};
+		let id_user = (await queries.addUser(user))[0];
+		let photo = 'grvfsvrsf';
+		//let photo = helper.writeImageInFile(req.body.photo, req.body.login);
+		let profile = {
+			'name'      : req.body.name,
+			'surname'   : req.body.surname,
+			'date_birth': req.body.date_birth,
+			'mail'      : req.body.mail,
+			'phone'     : req.body.phone,
+			'photo'     : photo
+		};
+		let id_profile = (await queries.addProfile(profile))[0];
+		
+		let client     = {
+			'id_profile': id_profile,
+			'id_user'   : id_user
+		}
+		client = await queries.addClient(client);
+		
+		res.send(client[0]);
 	}
-	client = await queries.addClient(client);
-	
-	res.send(client[0]);
+	catch(error){
+		console.log(`Error: ${error}`)
+	}
 });
 
 router.post('/log_in', async function(req, res) {
-	let user = await queries.checkLogin(req.body.login)[0];
-	if(user !== undefined){
-		if(helper.checkPassword(user.password, user.salt, req.body.hash_pass, req.body.salt)){
-			req.session.login = user.login;
-			req.session.key   = user.id;
-			req.session.role  = user.role;
-			//res.send({'role': user.role, 'login': user.login});
+	try{
+		let user = (await queries.checkLogin(req.body.login))[0];
+		if(user !== undefined){
+			if(helper.checkPassword(user.password, user.salt, req.body.hash_pass, req.body.salt)){
+				req.session.login = user.login;
+				req.session.id    = user.id;
+				req.session.role  = user.role;
+				res.send({'role': user.role, 'login': user.login});
+			}
+		}
+		else{
+			res.send('Неверный логин или пароль!')
 		}
 	}
-	else{
-		res.send('Неверный логин или пароль!')
+	catch(error){
+		console.log(`Error: ${error}`)
 	}
+	
 });
 
 
