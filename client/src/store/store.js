@@ -7,6 +7,7 @@ import homeServices from './HomeServices/homeServices'
 import reviewsSlider from './reviewsSlider/reviewsSlider'
 import price from './Price/price'
 import stock from './stock/stock'
+import registrationData from './Registration/registrationData'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     homeServices,
     reviewsSlider,
     price,
-    stock
+    stock,
+    registrationData
   }
 })
