@@ -6,9 +6,11 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import YmapPlugin from 'vue-yandex-maps'
 import { yandexMap, ymapMarker } from 'vue-yandex-maps'
+import Vuelidate from 'vuelidate'
 
 Vue.use(YmapPlugin)
 Vue.use(Vuetify)
+Vue.use(Vuelidate)
 
 
 Vue.config.productionTip = false
