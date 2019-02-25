@@ -14,14 +14,9 @@ apiAuthe.registration = function (user) {
     return axios.post(`${url}/sign_up`, user);
 }
 
-apiAuthe.authorization = function (login, password) {
-    return axios.post(`${url}/login`, {
-        login   : login,
-        password: password
-    });
+apiAuthe.authorization = function (requisites) {
+    return axios.post(`${url}/log_in`, requisites);
 }
-
-
 
 
 export default apiAuthe;
