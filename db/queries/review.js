@@ -13,10 +13,22 @@ function getReviews() {
                .join('profile', 'client.id_profile', 'profile.id')
                .join('review', 'client.id', 'review.id_client')
                .from('client');
-  }
+}
 
 //-------------------SELECT--------------------
 
+// function getFullName(id) {
+//     return knex.select('profile.name', 'profile.photo')
+//                .where({ 'client.id_user': parseInt(id) })
+//                .join('profile', 'client.id_profile', 'profile.id')
+//                .from('client');
+// }
+
+function getClientId(id) {
+    return knex.select('id')
+               .where({ 'id_user': parseInt(id) })
+               .from('client');
+}
 
 //-----------------INSERT----------------
 
@@ -35,5 +47,7 @@ function addReview(review){
 
 module.exports = {
     getReviews,
-    addReview
+    addReview,
+    //getFullName,
+    getClientId
 };
