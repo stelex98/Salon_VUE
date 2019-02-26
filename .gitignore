@@ -1,4 +1,4 @@
 node_modules
 client/node_modules
-config/knexfile.js
+knexfile.js
 client/public/picture

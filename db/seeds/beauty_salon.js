@@ -5,6 +5,7 @@ exports.seed = function(knex, Promise) {
     .then(() => knex('group').del())
     .then(() => knex('position').del())
     .then(() => knex('service').del())
+    .then(() => knex('discount').del())
     .then(() => knex('master').del())
     .then(() => knex('schedule').del())
     .then(() => knex('review').del())
