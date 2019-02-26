@@ -38,7 +38,6 @@
                                     v-model = "textReviews"
                                     box
                                     auto-grow
-                                    value
                                     ></v-textarea>
                                 </v-flex>
                                 </v-layout>
@@ -123,21 +122,6 @@ export default {
             textReviews : null
         };
   },
-    async created() {
-        let dataRreviews = await review.read();
-
-        let arrReviewsObj = dataRreviews.data.map((item, i) => {
-            let reviewsObj = {};
-
-            reviewsObj.reviewsText = item.review;
-            reviewsObj.namePearson = item.name;
-            reviewsObj.src         = item.photo;
-
-            return reviewsObj;
-        });
-
-      this.addNewReviews(arrReviewsObj);
-    },
     methods: {
         ...mapActions("reviewsSlider", ['addNewReviews']),
 
