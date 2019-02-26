@@ -13,6 +13,14 @@ router.get('/read/short/version', (req, res) => {
     .catch(error => console.log(`Error: ${error}`));
 });
 
+router.get('/read/full/version', (req, res) => {
+	queries.getDiscountFullVersion()
+    .then(data => {
+        res.send(data);
+    })
+    .catch(error => console.log(`Error: ${error}`));
+});
+
 
 //-------GET(id)------
 

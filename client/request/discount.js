@@ -8,6 +8,10 @@ apiDiscount.readDiscountForMainPage = function () {
     return axios.get(`${url}/read/short/version`);
 }
 
+apiDiscount.readDiscountForDiscountPage = function () {
+    return axios.get(`${url}/read/full/version`);
+}
+
 
 
 export default apiDiscount;

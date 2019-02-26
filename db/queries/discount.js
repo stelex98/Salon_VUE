@@ -9,10 +9,18 @@ const knex = require('../connection');
 //------------------SELECT *-----------------------
 
 function getDiscountShortVersion() {
-    return knex.select('discount.discount', 'service.service', 'service.photo')
+    return knex.select('discount.id', 'discount.discount', 'service.service', 'service.about_service')
                .join('service', 'discount.id_service', 'service.id')
                .from('discount');
 }
+
+function getDiscountFullVersion() {
+    return knex.select('*')
+               .join('service', 'discount.id_service', 'service.id')
+               .from('discount');
+}
+
+
 
 //-------------------SELECT--------------------
 
@@ -33,5 +41,6 @@ function getDiscountShortVersion() {
 
 module.exports = {
     getDiscountShortVersion,
+    getDiscountFullVersion,
 
 };
