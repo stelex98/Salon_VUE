@@ -38,7 +38,6 @@
                                     v-model = "textReviews"
                                     box
                                     auto-grow
-                                    value
                                     ></v-textarea>
                                 </v-flex>
                                 </v-layout>
@@ -122,7 +121,7 @@ export default {
             dialog      : false,
             textReviews : null
         };
-  },
+    },
     async created() {
         console.log('dfsdfsd');
         let dataRreviews = await review.read();

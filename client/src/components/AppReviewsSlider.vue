@@ -87,9 +87,24 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
+import { mapState, mapActions } from "vuex";
+import review from '../../request/review'
 export default {
+	async created() {
+        let dataRreviews = await review.read();
+
+        let arrReviewsObj = dataRreviews.data.map((item, i) => {
+            let reviewsObj = {};
+
+            reviewsObj.reviewsText = item.review;
+            reviewsObj.namePearson = item.name;
+            reviewsObj.src         = item.photo;
+
+            return reviewsObj;
+        });
+
+      this.addNewReviews(arrReviewsObj);
+    },
 	computed: {
 		...mapState("reviewsSlider", {
 			reviewsItems: "dataReviewsSlider"
@@ -97,7 +112,10 @@ export default {
 		changeQuantityDataToSix() {
 			return this.reviewsItems.slice(-6);
 		}
-	}
+	},
+	methods: {
+		...mapActions("reviewsSlider", ['addNewReviews']),
+	},
 };
 </script>
 
