@@ -8,6 +8,7 @@ const router  = express.Router();
 router.get('/read', (req, res) => {
 	queries.getReviews()
     .then(data => {
+        console.log(data);
         res.send(data);
     })
     .catch(error => console.log(`Error: ${error}`));
