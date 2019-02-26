@@ -121,7 +121,22 @@ export default {
             dialog      : false,
             textReviews : null
         };
-  },
+    },
+    async created() {
+        let dataRreviews = await review.read();
+
+        let arrReviewsObj = dataRreviews.data.map((item, i) => {
+            let reviewsObj = {};
+
+            reviewsObj.reviewsText = item.review;
+            reviewsObj.namePearson = item.name;
+            reviewsObj.src         = item.photo;
+
+            return reviewsObj;
+        });
+
+      this.addNewReviews(arrReviewsObj);
+    },
     methods: {
         ...mapActions("reviewsSlider", ['addNewReviews']),
 
