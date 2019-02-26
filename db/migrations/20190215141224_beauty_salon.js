@@ -48,6 +48,14 @@ exports.up = function(knex, Promise) {
       table.foreign('id_group').references('group.id');
     }),
 
+    knex.schema.createTable('discount', function(table) {
+      table.increments('id').primary();
+      table.integer('id_service');
+      table.integer('discount');
+      table.date('date');
+      table.foreign('id_service').references('service.id');
+    }),
+
     knex.schema.createTable('master', function(table) {
       table.increments('id').primary();
       table.integer('id_user');
@@ -77,10 +85,12 @@ exports.up = function(knex, Promise) {
       table.increments('id').primary();
       table.integer('id_client');
       table.integer('id_service');
+      table.integer('id_discount');
       table.integer('id_schedule');
       table.boolean('status');
       table.foreign('id_client').references('client.id');
       table.foreign('id_service').references('service.id');
+      table.foreign('id_discount').references('discount.id');
       table.foreign('id_schedule').references('schedule.id');
     })
   ])
