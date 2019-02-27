@@ -1,13 +1,14 @@
-const express        = require("express");
-const bodyParser     = require("body-parser");
-const router_authe   = require('./routes/authentication');
-const router_service = require('./routes/service');
-const router_review  = require('./routes/review');
-const env            = require('./config/env');
-const redis          = require("redis");
-const cookieParser   = require('cookie-parser');
-const session        = require('express-session');
-const RedisStore     = require('connect-redis')(session);
+const express         = require("express");
+const bodyParser      = require("body-parser");
+const router_authe    = require('./routes/authentication');
+const router_service  = require('./routes/service');
+const router_review   = require('./routes/review');
+const router_discount = require('./routes/discount');
+const env             = require('./config/env');
+const redis           = require("redis");
+const cookieParser    = require('cookie-parser');
+const session         = require('express-session');
+const RedisStore      = require('connect-redis')(session);
 
 
 const client  = redis.createClient();
@@ -40,7 +41,7 @@ app.use(function (req, res, next) {
 app.use('/authentication', router_authe);
 app.use('/service', router_service);
 app.use('/review', router_review);
-
+app.use('/discount', router_discount);
 
 const server = app.listen(env.PORT, () => {
     console.log(`Server listening on port: ${env.PORT}`);

@@ -123,6 +123,7 @@ export default {
         };
     },
     async created() {
+        console.log('dfsdfsd');
         let dataRreviews = await review.read();
 
         let arrReviewsObj = dataRreviews.data.map((item, i) => {
@@ -134,7 +135,7 @@ export default {
 
             return reviewsObj;
         });
-
+    console.log(arrReviewsObj);
       this.addNewReviews(arrReviewsObj);
     },
     methods: {
