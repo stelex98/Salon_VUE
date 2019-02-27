@@ -16,6 +16,13 @@ apiService.readPrice = function () {
     return axios.get(`${url}/read/price`);
 }
 
+apiService.readServiceType = function () {
+    return axios.get(`${url}/read/service_type`);
+}
+
+apiService.readServiceByType = function (id_group) {
+    return axios.get(`${url}/read/service/${id_group}`);
+}
 
 export default apiService;
 
