@@ -13,17 +13,17 @@
           sm6
           md4
           d-flex
-          v-for="(item, i) in dataOfStock"
+          v-for="(item, i) in allDiscountForUsers"
           :key="`stock${i}`"
           style="margin: 0 0 5% 0;"
         >
           <v-card hover @mouseover="currentStock(i)">
-            <v-img :src="item.img" height="200px"></v-img>
+            <v-img :src="item.picture" height="200px"></v-img>
 
             <v-card-title primary-title>
               <div>
-                <div class="headline">{{item.title}}</div>
-                <span class="grey--text">Воспользоваться можно до {{item.date}}</span>
+                <div class="headline">Скидка {{item.discount}}% на {{item.service}}</div>
+                <span class="grey--text">Воспользоваться можно до {{item.date.slice(0, 10)}}</span>
               </div>
             </v-card-title>
 
@@ -36,7 +36,7 @@
             </v-card-actions>
 
             <v-slide-y-transition>
-              <v-card-text v-show="item.show">{{item.describe}}</v-card-text>
+              <v-card-text v-show="item.show">{{item.about_service}}</v-card-text>
             </v-slide-y-transition>
           </v-card>
         </v-flex>
@@ -48,11 +48,28 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import formSignUpService from "@/components/forms/formSignUpService.vue";
+import request from '../../../request/discount'
 
 export default {
+    data(){
+        return {
+            allDiscountForUsers: {}
+        }
+    },
     components: {
         formSignUpService
     },
+async created() {
+    let allDiscount = await request.readDiscountForDiscountPage();
+
+    let newAllDiscount = allDiscount.data.map((item, i) => {
+        item.show = false;
+
+        return allDiscount.data[i]
+    })
+
+    this.allDiscountForUsers = newAllDiscount;
+},
   methods: {
     ...mapActions("stock", ["addNewCurrentStock"]),
 
