@@ -8,8 +8,8 @@ apiService.readByGroup = function () {
     return axios.get(`${url}/read/by_group`);
 }
 
-apiService.readOne = function (id) {
-    return axios.get(`${url}/read_one/${id}`);
+apiService.readOne = function (service) {
+    return axios.get(`${url}/read_one/${service}`);
 }
 
 apiService.readPrice = function () {

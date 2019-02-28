@@ -27,10 +27,10 @@ function getGroup() {
 
 //-------------------SELECT--------------------
 
-function getOneService(id) {
-    return knex.select()
+function getOneService(service) {
+    return knex.select('*')
                .from('service')
-               .where({ 'id': parseInt(id) });
+               .where({ 'service': String(service) });
 }
 
 function getServicesOneGroup(id_group) {

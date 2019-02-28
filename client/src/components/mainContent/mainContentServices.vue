@@ -32,7 +32,7 @@
                                 :items  = "item.itemServices"
                                 :id     = "`${i}`"
                                 :label  = "item.globalName"
-                                @change = "returnDescribe(item.globalName, item.itemServices[i], $event, item.id_group)"
+                                @change = "returnDescribe($event)"
                                 v-model = "selected"
                             ></v-select>
                         </v-flex>
@@ -99,19 +99,20 @@
 <script>
 import { mapState } from "vuex";
 import request from "../../../request/service"
-import _ from 'lodash';  
+import _ from 'lodash';
+
 
 export default {
   data() {
     return {
-      selected: null,
-      describe: [
+      selected   : null,
+      describe   : [
         {
-          title: '',
-          describe: ''
+          title    : '',
+          describe : ''
         }
       ],
-      allService: ''
+      allService : ''
     };
   },
     async created() {
@@ -157,15 +158,16 @@ export default {
     this.selected = this.dataServices;
   },
   methods: {
-    returnDescribe(globalName, currentService, ev, id_group) {
-      console.log(globalName, currentService, id_group);
-      
-      for (let i = 0; i < this.describeServices.length; i++) {
-        if (ev == this.describeServices[i].Title) {
-         this.describe.length = 0;
-          this.describe.push(this.describeServices[i]);
-        }
-      }
+    async returnDescribe(currentService) {
+        console.log('currentService ', currentService);
+      let serviceDescribe = await request.readOne(currentService);
+      console.log('serviceDescribe ', serviceDescribe);
+    //   for (let i = 0; i < this.describeServices.length; i++) {
+    //     if (ev == this.describeServices[i].Title) {
+    //      this.describe.length = 0;
+    //       this.describe.push(this.describeServices[i]);
+    //     }
+    //   }
     }
   }
 };
