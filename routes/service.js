@@ -21,11 +21,29 @@ router.get('/read/price', (req, res) => {
     .catch(error => console.log(`Error: ${error}`));
 });
 
+router.get('/read/service_type', (req, res) => {
+	queries.getGroup()
+    .then(data => {
+        res.send(data);
+    })
+    .catch(error => console.log(`Error: ${error}`));
+});
+
 
 //-------GET(id)------
 
-router.get('/read_one/:id', (req, res) => {
-	queries.getOneService(req.params.id)
+router.get('/read_one/:service', (req, res) => {
+    console.log(req.params);
+	queries.getOneService(req.params.service)
+    .then(data => {
+        console.log(data);
+        res.send(data);
+    })
+    .catch(error => console.log(`Error: ${error}`));
+});
+
+router.get('/read/service/:id', (req, res) => {
+	queries.getServicesOneGroup(req.params.id)
     .then(data => {
         res.send(data);
     })

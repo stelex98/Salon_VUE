@@ -28,19 +28,34 @@ function getDiscountFullVersion() {
 
 //-----------------INSERT----------------
 
-
+function addDiscount(discount){
+    return knex.insert(discount)
+               .returning('*')
+               .into('discount');
+}
 
 //----------------UPDATE------------------
 
-
+function updateDiscount(id, discount){
+    return knex.update(discount)
+               .from('discount')
+               .where({ 'id': parseInt(id) });
+}
 
 //----------------DELETE------------------
 
-
+function deleteDiscount(id){
+    return knex.del()
+               .from('discount')
+               .where({ 'id': parseInt(id) });
+}
 
 
 module.exports = {
     getDiscountShortVersion,
     getDiscountFullVersion,
+    addDiscount,
+    updateDiscount,
+    deleteDiscount
 
 };

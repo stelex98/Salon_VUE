@@ -43,7 +43,6 @@
 							<v-carousel-item 
 								v-for = "(item,i) in changeQuantityDataToSix" 
 								:key  = "i" 
-								src   = "https://visavis.by/sites/all/themes/visavis2/images/forms.jpg"
 							>
 								<v-container>
 									<v-layout 

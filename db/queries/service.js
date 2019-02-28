@@ -20,13 +20,27 @@ function getPrices() {
                .from('service');
 }
 
+function getGroup() {
+    return knex.select('*')
+               .from('group');
+}
+
 //-------------------SELECT--------------------
 
-function getOneService(id) {
-    return knex.select()
+function getOneService(service) {
+    return knex.select('*')
                .from('service')
-               .where({ 'id': parseInt(id) });
-  }
+               .where({ 'service': String(service) });
+}
+
+function getServicesOneGroup(id_group) {
+    let id_discount = knex.select('id_service')
+                          .from('discount'); 
+    return  knex.select('id', 'service')
+                .from('service')
+                .where('id', 'not in', id_discount)
+                .andWhere({ 'service.id_group': parseInt(id_group) });
+}
 
 //-----------------INSERT----------------
 
@@ -43,5 +57,7 @@ function getOneService(id) {
 module.exports = {
     getServicesByGroup,
     getOneService,
-    getPrices
+    getPrices,
+    getGroup,
+    getServicesOneGroup
 };
