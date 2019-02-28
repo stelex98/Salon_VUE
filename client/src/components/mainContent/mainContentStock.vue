@@ -23,7 +23,7 @@
             <v-card-title primary-title>
               <div>
                 <div class="headline">Скидка {{item.discount}}% на {{item.service}}</div>
-                <span class="grey--text">Воспользоваться можно до {{item.date}}</span>
+                <span class="grey--text">Воспользоваться можно до {{item.date.slice(0, 10)}}</span>
               </div>
             </v-card-title>
 
@@ -68,7 +68,7 @@ async created() {
         return allDiscount.data[i]
     })
 
-    this.allDiscountForUsers = allDiscount;
+    this.allDiscountForUsers = allDiscount.data;
     console.log(this.allDiscountForUsers);
 
 },
