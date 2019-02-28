@@ -12,28 +12,28 @@
                 justify-space-around
             >
                 <v-flex 
-                    class="listServices"
+                    class = "listServices"
+                    style = "height: 67vh"
                     d-flex 
                     md3
                     sm7 
-                    xs10 
-                    style="height: 67vh" 
+                    xs10  
                 >
                     <v-layout 
-                        class="select-services"
+                        class = "select-services"
                         column 
                     >
                         <h1>Услуги нашего салона</h1>
                         <v-flex 
-                            v-for="(item, i) in servicesContent" 
-                            :key="`services${i}`"
+                            v-for = "(item, i) in allService" 
+                            :key  = "`services${i}`"
                         >
                             <v-select
-                                :items="item.itemsServices"
-                                :id="`${i}`"
-                                :label="item.globalName"
-                                @change="returnDescribe($event)"
-                                v-model="selected"
+                                :items  = "item.itemServices"
+                                :id     = "`${i}`"
+                                :label  = "item.globalName"
+                                @change = "returnDescribe(item.globalName, item.itemServices[i], $event, item.id_group)"
+                                v-model = "selected"
                             ></v-select>
                         </v-flex>
                     </v-layout>
@@ -55,11 +55,11 @@
                             d-flex 
                             align-center
                         >
-                            <v-card style="margin-top: 10%; margin-bottom: 10%;">
+                            <v-card style = "margin-top: 10%; margin-bottom: 10%;">
                                 <v-img
-                                    class="white--text"
-                                    height="200px"
-                                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                    class  = "white--text"
+                                    height = "200px"
+                                    src    = "https://cdn.vuetifyjs.com/images/cards/docks.jpg"
                                 >
                                     <v-container 
                                         fill-height 
@@ -71,7 +71,7 @@
                                                 align-end 
                                                 flexbox
                                             >
-                                                <span class="headline">{{describe[0].Title}}</span>
+                                                <span class = "headline">{{describe[0].Title}}</span>
                                             </v-flex>
                                         </v-layout>
                                     </v-container>
@@ -98,6 +98,8 @@
 
 <script>
 import { mapState } from "vuex";
+import request from "../../../request/service"
+import _ from 'lodash';  
 
 export default {
   data() {
@@ -108,13 +110,43 @@ export default {
           title: '',
           describe: ''
         }
-      ]
+      ],
+      allService: ''
     };
   },
+    async created() {
+
+        let services        = await request.readByGroup();
+        let groupedServices = Object.values(_.groupBy(services.data, 'id_group'));
+        let arrObj          = [];
+
+        groupedServices.forEach( (item, i) => {
+            groupedServices[i].push(this.globalNameServices[i])
+        });
+
+        groupedServices.forEach((item, i) => {
+            let obj = {
+                globalName   : '',
+                itemServices : [],
+                id_group     : ''
+            };
+            obj.globalName = item[item.length - 1];
+
+            item.forEach( (item_2, i, array) => {
+                typeof(item_2) === 'object' ? obj.itemServices.push(item_2.service) : '';
+                typeof(item_2) === 'object' ? obj.id_group = item_2.id_group : '';
+            });
+
+            arrObj.push(obj);
+        })
+ 
+        this.allService = arrObj;
+    },
   computed: {
     ...mapState("homeServices",{
-      dataServices: "servicesContent",
-      describeServices: "describeForItemServices"
+      dataServices       : "servicesContent",
+      describeServices   : "describeForItemServices",
+      globalNameServices : "globalNameServices"
     }),
     
     servicesContent() {
@@ -125,12 +157,13 @@ export default {
     this.selected = this.dataServices;
   },
   methods: {
-    returnDescribe(ev) {
+    returnDescribe(globalName, currentService, ev, id_group) {
+      console.log(globalName, currentService, id_group);
+      
       for (let i = 0; i < this.describeServices.length; i++) {
         if (ev == this.describeServices[i].Title) {
          this.describe.length = 0;
           this.describe.push(this.describeServices[i]);
-          console.log(this.describe);
         }
       }
     }
