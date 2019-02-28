@@ -11,14 +11,15 @@ const knex = require('../connection');
 function getDiscountShortVersion() {
     return knex.select('discount.id', 'discount.discount', 'service.service', 'service.about_service')
                .join('service', 'discount.id_service', 'service.id')
-               .from('discount');
+               .from('discount')
+               .where( 'discount.date', '>',  knex.fn.now());;
 }
 
 function getDiscountFullVersion() {
     return knex.select('*')
                .join('service', 'discount.id_service', 'service.id')
                .from('discount')
-               .where( 'discount.date', '<',  knex.fn.now());
+               .where( 'discount.date', '>',  knex.fn.now());
 }
 
 
