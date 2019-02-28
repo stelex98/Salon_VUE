@@ -17,7 +17,8 @@ function getDiscountShortVersion() {
 function getDiscountFullVersion() {
     return knex.select('*')
                .join('service', 'discount.id_service', 'service.id')
-               .from('discount');
+               .from('discount')
+               .where( 'discount.date', '<',  knex.fn.now());
 }
 
 
