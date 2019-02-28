@@ -113,7 +113,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import review from '../../../request/review'
+import review from '../../../request/review';
 
 export default {
     data() {
