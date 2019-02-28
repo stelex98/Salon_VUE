@@ -44,6 +44,11 @@ function getServicesOneGroup(id_group) {
 
 //-----------------INSERT----------------
 
+function addService(service){
+    return knex.insert(service)
+               .returning('*')
+               .into('service');
+}
 
 //----------------UPDATE------------------
 
@@ -59,5 +64,6 @@ module.exports = {
     getOneService,
     getPrices,
     getGroup,
-    getServicesOneGroup
+    getServicesOneGroup,
+    addService
 };

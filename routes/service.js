@@ -50,6 +50,15 @@ router.get('/read/service/:id', (req, res) => {
 
 //--------POST--------
 
+router.post('/add', (req, res) => {
+    console.log(req.body);
+	queries.addService(req.body)
+    .then(data => {
+        res.send(data);
+    })
+    .catch(error => console.log(`Error: ${error}`));
+});
+
 //---------PUT--------
 
 //-------DELETE-------
