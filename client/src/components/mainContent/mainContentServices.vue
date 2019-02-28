@@ -59,7 +59,7 @@
                                 <v-img
                                     class  = "white--text"
                                     height = "200px"
-                                    src    = "https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                    :src   = "describe[0].img"
                                 >
                                     <v-container 
                                         fill-height 
@@ -71,23 +71,23 @@
                                                 align-end 
                                                 flexbox
                                             >
-                                                <span class = "headline">{{describe[0].Title}}</span>
+                                                <span class = "headline">{{describe[0].title}}</span>
                                             </v-flex>
                                         </v-layout>
                                     </v-container>
                                 </v-img>
-                                <v-card-title>
+                                <v-card-title primary-title>
                                     <div>
-                                        <span class="grey--text">Описание выбранной услуги</span>
+                                        <span class = "grey--text">Описание выбранной услуги</span>
                                         <br>
-                                        <span>
-                                        {{describe[0].describe}}
-                                        </span>
+                                        <div>
+                                            {{describe[0].describe}}
+                                        </div>
                                         <br>
-                                        <span>Цена: {{describe[0].price}}</span>
+                                        <span style = "font-weight: bold">Цена: {{describe[0].price}}</span>
                                     </div>
                                 </v-card-title>
-                            </v-card>
+                            </v-card>    
                         </v-flex>
                     </v-layout>
                 </v-flex>
@@ -109,7 +109,9 @@ export default {
       describe   : [
         {
           title    : '',
-          describe : ''
+          describe : '',
+          price    : '',
+          img      : ''
         }
       ],
       allService : ''
@@ -159,15 +161,12 @@ export default {
   },
   methods: {
     async returnDescribe(currentService) {
-        console.log('currentService ', currentService);
-      let serviceDescribe = await request.readOne(currentService);
-      console.log('serviceDescribe ', serviceDescribe);
-    //   for (let i = 0; i < this.describeServices.length; i++) {
-    //     if (ev == this.describeServices[i].Title) {
-    //      this.describe.length = 0;
-    //       this.describe.push(this.describeServices[i]);
-    //     }
-    //   }
+        let serviceDescribe = await request.readOne(currentService);
+        
+        this.describe[0].describe = serviceDescribe.data[0].about_service;
+        this.describe[0].price    = serviceDescribe.data[0].price;
+        this.describe[0].title    = serviceDescribe.data[0].service;
+        this.describe[0].img      = serviceDescribe.data[0].picture;
     }
   }
 };
