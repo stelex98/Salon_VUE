@@ -20,6 +20,7 @@
                 justify-space-around
             >
                 <v-flex 
+                    class = "stock-items"
                     v-for = "(item, i) in dataShares" 
                     :key  = "`sharedId${i}`"
                     md3 
@@ -30,13 +31,14 @@
                         class      = "cardShares text--black" 
                         color      = "white" 
                         v-on:click = "a(i)"
+                        to =  "/stock"
                         hover 
                     >
                         <v-card-title primary-title>
                             <div>
                                 <div class = "headline">{{item.service}}</div>
                                 <br>
-                                <span>{{item.about_service}}</span>
+                                <span>123123 12312 {{item.about_service}}</span>
                             </div>
                         </v-card-title>
                         <v-card-actions>
@@ -69,6 +71,11 @@ export default {
 <style scoped>
     .container {
         background-image: none;
+    }
+
+    .stock-items {
+        display: flex;
+        align-self: stretch;
     }
 
     .cardShares {
