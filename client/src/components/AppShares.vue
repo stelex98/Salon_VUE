@@ -38,7 +38,7 @@
                             <div>
                                 <div class = "headline">{{item.service}}</div>
                                 <br>
-                                <span>123123 12312 {{item.about_service}}</span>
+                                <div class = "tardShares__mainText"> {{item.about_service}} </div>
                             </div>
                         </v-card-title>
                         <v-card-actions>
@@ -84,6 +84,16 @@ export default {
         border-bottom-left-radius : 0;
         margin                    : 15px 0 20px 0;
         padding                   : 15px;
+    }
+
+    .tardShares__mainText{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-height: 16px;     /* fallback */
+        max-height: 45px;      /* fallback */
+        -webkit-line-clamp: 3; /* number of lines to show */
+        -webkit-box-orient: vertical;
     }
 
     h1 {
