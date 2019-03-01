@@ -105,10 +105,12 @@ export default {
     },
     async created() {
         let allDiscount = await request.readDiscountForDiscountPage();
+        let difference = 0;
 
         let newAllDiscount = allDiscount.data.map((item, i) => {
             item.show      = false;
-            item.new_price = (item.price * item.discount) / 100;
+            difference     = (item.price * item.discount) / 100;
+            item.new_price = item.price - difference;
 
             return allDiscount.data[i]
         });
