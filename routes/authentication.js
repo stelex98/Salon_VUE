@@ -51,18 +51,20 @@ router.post('/sign_up', async function(req, res) {
 
 router.post('/log_in', async function(req, res) {
 	try{
-		let user = (await queries.checkLogin(req.body.login))[0];
+		let user = (await queries.checkLogin(req.body.log))[0];
 		if(user !== undefined){
-			if(helper.checkPassword(user.password, user.salt, req.body.hash_pass, req.body.salt)){
+			if(helper.checkPassword(user.password, user.salt, req.body.pass, req.body.salt)){
 				req.session.login = user.login;
 				req.session.id    = user.id;
 				req.session.role  = user.role;
-				res.send({'role': user.role, 'login': user.login});
+				res.send(user.role);
 			}
+			else			
+				res.send(null);
 		}
-		else{
-			res.send('Неверный логин или пароль!')
-		}
+		else
+			res.send(null);
+		
 	}
 	catch(error){
 		console.log(`Error: ${error}`)
