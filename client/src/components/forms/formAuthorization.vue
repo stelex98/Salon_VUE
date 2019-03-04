@@ -3,9 +3,9 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-btn 
         slot  = "activator" 
-        class = "transparent white--text" 
+        class = "transparent black--text" 
         dark
-      >Авторизоваться</v-btn>
+      >Авторизация</v-btn>
       <form @submit.prevent = "submit">
         <v-card>
             <v-card-title>
