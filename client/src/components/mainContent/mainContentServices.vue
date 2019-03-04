@@ -78,13 +78,22 @@
                                 </v-img>
                                 <v-card-title primary-title>
                                     <div>
-                                        <span class = "grey--text">Описание выбранной услуги</span>
+                                        <span 
+                                            class = "grey--text"
+                                            v-if  = "describe[0].price.length !== 0"
+                                        >
+                                            Описание выбранной услуги</span>
                                         <br>
                                         <div>
                                             {{describe[0].describe}}
                                         </div>
                                         <br>
-                                        <span style = "font-weight: bold">Цена: {{describe[0].price}}</span>
+                                        <span 
+                                            style = "font-weight: bold" 
+                                            v-if  = "describe[0].price.length !== 0"
+                                        >
+                                            Цена: {{describe[0].price}}
+                                        </span>
                                     </div>
                                 </v-card-title>
                             </v-card>    
@@ -109,9 +118,9 @@ export default {
       describe   : [
         {
           title    : '',
-          describe : '',
+          describe : 'Современная женщина уделяет большое внимание своему внешнему виду: стрижка, модная прическа и укладка, натуральный маникюр или наращенные ногти - все это входит в арсенал прекрасного пола. Уход за телом, волосами, ногтями невозможен в домашних условиях, и нужно регулярно посещать салон красоты.',
           price    : '',
-          img      : ''
+          img      : 'http://ix2hgw153.topstyle.me/uploads/s/b/w/i/bwitq7rl8ntj/img/full_vjH7QLsH.jpg'
         }
       ],
       allService : ''
