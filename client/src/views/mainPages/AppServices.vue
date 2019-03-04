@@ -30,7 +30,7 @@ export default {
 }
 .appHeaderServices .container {
   max-height: 225px;
-  background-image: url(https://pp.userapi.com/c852224/v852224481/c34d0/5_W6kqs_8so.jpg) !important;
+  background-image: url(https://pp.userapi.com/c846220/v846220368/1b16b8/oKVkgVio79c.jpg) !important;
   background-position: center 80%;
 }
 </style>
