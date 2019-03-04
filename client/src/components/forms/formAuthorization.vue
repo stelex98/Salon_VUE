@@ -15,7 +15,7 @@
                     <v-layout wrap>
                         <v-flex xs12>
                             <v-text-field  
-                                label           = "Имя*" 
+                                label           = "Логин*" 
                                 hint            = "Введите ваш логин при регистрации" 
                                 v-model         = "login"
                                 :error-messages = "loginError"
@@ -123,7 +123,8 @@ export default {
             objUser.pass = hash.toString();
             objUser.salt = salt;
 
-            let checkUser = request.authorization(objUser);
+            let checkUser = await request.authorization(objUser);
+            console.log(checkUser);
         }
     },
 };
