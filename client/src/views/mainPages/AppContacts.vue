@@ -26,4 +26,6 @@ export default {
   background-image: url(https://pp.userapi.com/c846220/v846220368/1b16b8/oKVkgVio79c.jpg) !important;
   background-position: center 80%;
 }
+
+
 </style>

@@ -8,6 +8,7 @@ import reviewsSlider from './reviewsSlider/reviewsSlider'
 import price from './Price/price'
 import stock from './stock/stock'
 import registrationData from './Registration/registrationData'
+import user from './user/user'
 
 Vue.use(Vuex)
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     reviewsSlider,
     price,
     stock,
-    registrationData
+    registrationData,
+    user
   }
 })
