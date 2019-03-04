@@ -7,7 +7,7 @@
     >
         <v-btn 
             slot  = "activator" 
-            class = "transparent white--text" 
+            class = "transparent black--text" 
             dark
         >
             Регистрация

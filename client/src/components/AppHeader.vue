@@ -41,7 +41,7 @@
             sm4
         >
             <p
-                class="list-adress-phone text-md-left white--text hidden-xs-only"
+                class="list-adress-phone text-md-left black--text hidden-xs-only"
                 v-for="(item, i) in listAdressPhone"
                 :key="`indexPhoneAdress${i}`"
             >
@@ -60,7 +60,7 @@
         >
             <router-link to="/">
                 <img
-                    src="https://visavis.by/sites/default/files/logo3x.png"
+                    src="http://www.beauty-vitebsk.by/wp-content/uploads/2017/07/%D0%BB%D0%BE%D0%B3%D0%BE5.png"
                     style="width: 220px; height: 120px;"
                 >
           </router-link>
@@ -91,7 +91,7 @@
             ></v-toolbar-side-icon>
             <v-toolbar-items class="toolbar-items hidden-sm-and-down text-md-center">
                 <v-btn
-                    class="white--text"
+                    class="black--text"
                     flat
                     v-for="(item, i) in menuItems"
                     :key="`menuItems${i}`"
@@ -136,7 +136,7 @@ export default {
 
 <style>
 .container {
-  background-image: url(https://visavis.by/sites/all/themes/visavis2/images/top1.jpg);
+  background-image: url(http://being-woman.ru/wp-content/uploads/2015/09/sprei_i_muss_ton_legche_vozduxa.jpg);
   background-size: cover;
   background-position: center;
   max-width: 1300px;
