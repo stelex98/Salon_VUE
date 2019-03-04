@@ -6,7 +6,6 @@
         class = "transparent black--text" 
         dark
       >Авторизация</v-btn>
-      <form @submit.prevent = "submit">
         <v-card>
             <v-card-title>
                 <span class="headline">Вход</span>
@@ -51,17 +50,19 @@
                     color     = "blue darken-1" 
                     type      = "submit" 
                     :disabled = "$v.$invalid"
+                    @click    = "logIn"
                     flat 
                 >Войти</v-btn>
             </v-card-actions>
         </v-card>
-      </form>
     </v-dialog>
   </div>
 </template>
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators'
+import request from '../../../request/authentication'
+import CryptoJS from "crypto-js"
 
 export default {
     data() {
@@ -108,6 +109,21 @@ export default {
             this.dialog   = false;
             this.password = '';
             this.login    = '';
+        },
+        async logIn(){
+            let objUser = {
+                log  : '',
+                pass : '',
+                salt : ''
+            };
+            let salt = CryptoJS.lib.WordArray.random(128/8);
+            let hash = CryptoJS.PBKDF2(this.password, salt, { keySize: 128/32 });
+
+            objUser.log  = this.login;
+            objUser.pass = hash.toString();
+            objUser.salt = salt;
+
+            let checkUser = request.authorization(objUser);
         }
     },
 };
