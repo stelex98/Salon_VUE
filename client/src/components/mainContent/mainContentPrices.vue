@@ -112,6 +112,7 @@ export default {
 .container {
     background-image: none;
 }
+
 h1 {
     font-family: "Cormorant", serif;
     font-size: 3em;

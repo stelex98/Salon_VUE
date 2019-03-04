@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-container 
+        <v-container
             fluid 
             ma-0 
             pa-0
