@@ -36,7 +36,7 @@ helper.checkPassword = function (crypt_pass, user_salt, pass, salt){
   let bytes  = CryptoJS.AES.decrypt(crypt_pass, user_salt + env.GLOBAL_SALT);
   let password = bytes.toString(CryptoJS.enc.Utf8);
   let hash = CryptoJS.PBKDF2(password, salt, { keySize: 128/32 });
-	hash.toString() === pass ? true : false;
+	return hash.toString() === pass ? true : false;
 }
 
 
