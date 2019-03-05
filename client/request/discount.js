@@ -1,8 +1,8 @@
-const axios = require('axios');
+const axios       = require('axios');
 
-const url = 'http://localhost:3010/discount';
 
-let apiDiscount = {};
+const url         = 'http://localhost:3010/discount';
+const apiDiscount = {};
 
 apiDiscount.readDiscountForMainPage = function () {
     return axios.get(`${url}/read/short/version`);

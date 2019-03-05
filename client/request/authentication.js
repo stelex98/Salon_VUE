@@ -1,8 +1,8 @@
-const axios = require('axios');
+const axios    = require('axios');
 
-const url = 'http://localhost:3010/authentication';
 
-let apiAuthe = {};
+const url      = 'http://localhost:3010/authentication';
+const apiAuthe = {};
 
 apiAuthe.checkLogin = function (login) {
     return axios.post(`${url}/login/check`, {
