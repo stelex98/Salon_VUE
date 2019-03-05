@@ -20,6 +20,11 @@ function getPrices() {
                .from('service');
 }
 
+function getPosition() {
+    return knex.select('id', 'position')
+               .from('position');
+}
+
 function getGroup() {
     return knex.select('*')
                .from('group');
@@ -65,5 +70,6 @@ module.exports = {
     getPrices,
     getGroup,
     getServicesOneGroup,
-    addService
+    addService,
+    getPosition
 };
