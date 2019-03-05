@@ -39,5 +39,17 @@ helper.checkPassword = function (crypt_pass, user_salt, pass, salt){
 	return hash.toString() === pass ? true : false;
 }
 
+helper.checkMaster = function (input_login, input_pass, user){
+  if(input_login === user.login){
+    let bytes  = CryptoJS.AES.decrypt(user.password, user.salt + env.GLOBAL_SALT);
+    let password = bytes.toString(CryptoJS.enc.Utf8);
+    return password === input_pass
+    ? true
+    :false
+  }
+  else
+    return false;
+}
+
 
 module.exports = helper;

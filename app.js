@@ -4,6 +4,7 @@ const router_authe    = require('./routes/authentication');
 const router_service  = require('./routes/service');
 const router_review   = require('./routes/review');
 const router_discount = require('./routes/discount');
+const router_human    = require('./routes/human');
 const env             = require('./config/env');
 const redis           = require("redis");
 const cookieParser    = require('cookie-parser');
@@ -42,6 +43,7 @@ app.use('/authentication', router_authe);
 app.use('/service', router_service);
 app.use('/review', router_review);
 app.use('/discount', router_discount);
+app.use('/human', router_human);
 
 const server = app.listen(env.PORT, () => {
     console.log(`Server listening on port: ${env.PORT}`);

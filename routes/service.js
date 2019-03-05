@@ -29,6 +29,13 @@ router.get('/read/service_type', (req, res) => {
     .catch(error => console.log(`Error: ${error}`));
 });
 
+router.get('/position', (req, res) => {
+	queries.getPosition()
+    .then(data => {
+        res.send(data);
+    })
+    .catch(error => console.log(`Error: ${error}`));
+});
 
 //-------GET(id)------
 
@@ -51,7 +58,6 @@ router.get('/read/service/:id', (req, res) => {
 //--------POST--------
 
 router.post('/add', (req, res) => {
-    console.log(req.body);
 	queries.addService(req.body)
     .then(data => {
         res.send(data);
