@@ -1,8 +1,8 @@
-const axios = require('axios');
+const axios      = require('axios');
 
-const url = 'http://localhost:3010/service';
 
-let apiService = {};
+const url        = 'http://localhost:3010/service';
+const apiService = {};
 
 apiService.readByGroup = function () {
     return axios.get(`${url}/read/by_group`);
@@ -22,6 +22,10 @@ apiService.readServiceType = function () {
 
 apiService.readServiceByType = function (id_group) {
     return axios.get(`${url}/read/service/${id_group}`);
+}
+
+apiService.readPosition = function (id_group) {
+    return axios.get(`${url}/position`);
 }
 
 export default apiService;

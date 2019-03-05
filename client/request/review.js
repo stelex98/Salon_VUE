@@ -1,8 +1,8 @@
-const axios = require('axios');
+const axios     = require('axios');
 
-const url = 'http://localhost:3010/review';
 
-let apiReview = {};
+const url       = 'http://localhost:3010/review';
+const apiReview = {};
 
 apiReview.read = function () {
     return axios.get(`${url}/read`);
