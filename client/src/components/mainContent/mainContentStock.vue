@@ -69,9 +69,17 @@
 
                     <v-card-actions>
                         <formSignUpService></formSignUpService>
+                        <v-flex 
+                            style = "color: red; font-size: 0.8rem"
+                            v-if  = "returnDataCheckAuthorization"
+                            ml-3 
+                        >
+                            Для записи на услугу пожалуйста авторизируйтесь
+                        </v-flex>
                         <v-spacer></v-spacer>
                         <v-btn 
-                            @click = "item.show = !item.show"
+                            @click    = "item.show = !item.show"
+                            :disabled = "returnDataCheckAuthorization"
                             icon 
                         >
                             <v-icon>{{ item.show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
@@ -125,15 +133,16 @@ export default {
         }
     },
     computed: {
+        ...mapState('user', ['user']),
+
         ...mapState("stock",{
             dataOfStock: "stock"
         }),
-    },
-  watch: {
-    a(){
-      console.log('11111');
+        returnDataCheckAuthorization() {
+			return this.user === 'true' ? false 
+										: true
+		}
     }
-  }
 };
 </script>
 

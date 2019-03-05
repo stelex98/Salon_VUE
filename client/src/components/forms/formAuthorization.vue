@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog 
+        v-model   = "dialog"  
+        max-width = "600px"
+        persistent
+    >
       <v-btn 
         slot  = "activator" 
         class = "transparent black--text" 
@@ -8,9 +12,16 @@
       >Авторизация</v-btn>
         <v-card>
             <v-card-title>
-                <span class="headline">Вход</span>
+                <span class = "headline">Вход</span>
             </v-card-title>
             <v-card-text>
+                <v-alert
+                        :value     = "showAlert"
+                        type       = "error"
+                        transition = "scale-transition"
+                    >
+                        Неправильные логин или пароль.
+                    </v-alert>
                 <v-container grid-list-md>
                     <v-layout wrap>
                         <v-flex xs12>
@@ -63,16 +74,19 @@
 import { required, minLength } from 'vuelidate/lib/validators'
 import request from '../../../request/authentication'
 import CryptoJS from "crypto-js"
+import { mapActions, mapState } from 'vuex'
 
 export default {
     data() {
         return {
-            dialog   : false,
-            login    : '',
-            password : ''
+            dialog    : false,
+            login     : '',
+            password  : '',
+            showAlert : false
         };
     },
     computed: {
+        ...mapState('user', ['user']),
         loginError() {
             const errors = [];
 
@@ -104,6 +118,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions('user', ['addUser']),
         closeWindow() {
             this.$v.$reset();
             this.dialog   = false;
@@ -116,15 +131,43 @@ export default {
                 pass : '',
                 salt : ''
             };
-            let salt = CryptoJS.lib.WordArray.random(128/8);
-            let hash = CryptoJS.PBKDF2(this.password, salt, { keySize: 128/32 });
+            let checkUser         = {};
+            let salt              = CryptoJS.lib.WordArray.random(128/8);
+            let hash              = CryptoJS.PBKDF2(this.password, salt, { keySize: 128/32 });
+            let arrayLocalStorage = {};
 
             objUser.log  = this.login;
             objUser.pass = hash.toString();
             objUser.salt = salt;
 
-            let checkUser = await request.authorization(objUser);
-            console.log(checkUser);
+            /* check auth user*/
+            checkUser = await request.authorization(objUser);
+
+            /*show alert if user is't auth (error login/pass) */
+            checkUser.data.length === 0 ? this.showAlert = true
+                                        : this.showAlert = false;
+
+            /*add to localStorage status about user. true - user is auth, false - guest */
+            checkUser.data.length === 0 ? localStorage.setItem('userIsAuth:', false) : 
+            !checkUser.data             ? localStorage.setItem('userIsAuth:', true) 
+                                        : '';
+            
+            arrayLocalStorage = Object.values(localStorage);
+
+            /*add to storage status user from localStorage*/
+            arrayLocalStorage.forEach((item, i) => {
+                localStorage.key(i) === 'userIsAuth:' ? this.addUser(localStorage.getItem(localStorage.key(i)))
+                                                      : ''
+            });
+
+            /*if data is corrent => hide the dialog*/
+            if (this.showAlert){
+                setTimeout(()=> {
+                    this.showAlert = false
+                }, 3000);
+            } else {
+                this.dialog = false;
+            }
         }
     },
 };

@@ -6,15 +6,18 @@
             persistent
         >
             <v-btn 
-                slot   = "activator" 
-                class  = "transparent black--text" 
-                @click = "check"
+                slot      = "activator" 
+                class     = "transparent black--text" 
+				:disabled = "returnDataCheckAuthorization"
+                @click 	  = "check"
             >
                 Записаться
             </v-btn>
             <v-card>
                 <v-card-title>
-                    <span class = "headline">
+                    <span 
+						class = "headline"
+					>
                         Записаться
                     </span>
                 </v-card-title>
@@ -132,89 +135,105 @@ import { mapState, mapActions } from "vuex";
 import request from '../../../request/discount'
 
 export default {
-  data: vm => ({
-    dialog: false,
-    menu: false,
-    date: new Date().toISOString().substr(0, 10),
-    dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-    menu1: false,
-    TypeOfServices: [],
-    TypeOfMasters: [],
-    services: [],
-    choosedTypeService: null,
-    choosedService: null,
-  }),
-  computed: {
-    ...mapState("stock", {
-      arrayStock: "stock",
-      arrayMasters: "masters",
-      dataCurrentStock: "currentStock"
-    }),
-    ...mapState("homeServices", {
-      arrayServicesContent: "servicesContent"
-    }),
+	data: vm => ({
+		dialog: false,
+		menu: false,
+		date: new Date().toISOString().substr(0, 10),
+		dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+		menu1: false,
+		TypeOfServices: [],
+		TypeOfMasters: [],
+		services: [],
+		choosedTypeService: null,
+		choosedService: null,
+	}),
+	created() {
+		let arrayLocalStorage = Object.values(localStorage);
 
-    computedDateFormatted() {
-      return this.formatDate(this.date);
-    },
-    returnServicesContent() {
-      return this.arrayServicesContent;
-    }
-  },
-  watch: {
-    menu(val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
-    },
-    date(val) {
-      this.dateFormatted = this.formatDate(this.date);
-    }
-  },
-  methods: {
-    save(date) {
-      this.$refs.menu.save(date);
-    },
+		/*add to storage status user from localStorage*/
+		arrayLocalStorage.forEach((item, i) => {
+			localStorage.key(i) === 'userIsAuth:' ? this.addUser(localStorage.getItem(localStorage.key(i)))
+													: ''
+		});
+  	},
+	computed: {
+		...mapState("stock", {
+			arrayStock	     : "stock",
+			arrayMasters	 : "masters",
+			dataCurrentStock : "currentStock"
+		}),
+		...mapState("homeServices", {
+			arrayServicesContent: "servicesContent"
+		}),
+		...mapState('user', ['user']),
 
-    formatDate(date) {
-      if (!date) return null;
+		computedDateFormatted() {
+			return this.formatDate(this.date);
+		},
+		returnServicesContent() {
+			return this.arrayServicesContent;
+		},
+		returnDataCheckAuthorization() {
+			return this.user === 'true' ? false 
+										: true
+		}
+	},
+	watch: {
+		menu(val) {
+			val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
+		},
+		date(val) {
+			this.dateFormatted = this.formatDate(this.date);
+		}
+	},
+	methods: {
+		...mapActions('user', ['addUser']),
 
-      const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
-    },
+		save(date) {
+			this.$refs.menu.save(date);
+		},
 
-    parseDate(date) {
-      if (!date) return null;
+		formatDate(date) {
+			if (!date) return null;
 
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    },
+			const [year, month, day] = date.split("-");
+			return `${month}/${day}/${year}`;
+		},
 
-    check(index) {
-      let objectAllServices = this.arrayServicesContent;
-      let objectAllStock = this.arrayStock;
-      let currentStockIndex = this.dataCurrentStock;
-      let objectAllMaters = this.arrayMasters;
+		parseDate(date) {
+			if (!date) return null;
 
-      for (let i = 0; i < objectAllServices.length; i++) {
-        this.TypeOfServices.push(objectAllServices[i].globalName);
+			const [month, day, year] = date.split("/");
+			return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+		},
 
-        for (let j = 0; j < objectAllServices[i].itemsServices.length; j++) {
-          this.services.push(objectAllServices[i].itemsServices[j]);
-        }
-      }
+		check(index) {
+			let objectAllServices = this.arrayServicesContent;
+			let objectAllStock    = this.arrayStock;
+			let currentStockIndex = this.dataCurrentStock;
+			let objectAllMaters   = this.arrayMasters;
 
-      for (let i = 0; i < objectAllMaters.length; i++) {
-        this.TypeOfMasters.push(objectAllMaters[i]);
-      }
+			for (let i = 0; i < objectAllServices.length; i++) {
+				this.TypeOfServices.push(objectAllServices[i].globalName);
 
-      this.choosedTypeService = objectAllStock[currentStockIndex].typeService;
-      this.choosedService = objectAllStock[currentStockIndex].service;
-    }
-  }
+				for (let j = 0; j < objectAllServices[i].itemsServices.length; j++) {
+					this.services.push(objectAllServices[i].itemsServices[j]);
+				}
+			}
+
+			for (let i = 0; i < objectAllMaters.length; i++) {
+				this.TypeOfMasters.push(objectAllMaters[i]);
+			}
+
+			this.choosedTypeService = objectAllStock[currentStockIndex].typeService;
+			this.choosedService 	= objectAllStock[currentStockIndex].service;
+		}
+	}
 };
 </script>
 
 <style scoped>
-.container {
-  background-image: none;
-}
+	.container {
+		background-image: none;
+	}
 </style>
