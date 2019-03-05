@@ -3,6 +3,7 @@
         <v-dialog 
             v-model   = "dialog"  
             max-width = "600px"
+            :disabled = "returnDataCheckAuthorization"
             persistent
         >
             <v-btn 
