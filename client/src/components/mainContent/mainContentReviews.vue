@@ -11,6 +11,13 @@
                 >
                 <v-flex>
                     <h1>Отзывы наших любимых клиентов</h1>
+                    <v-flex 
+                        style = "color: red"
+                        v-if = "returnDataCheckAuthorization"
+                        ml-2
+                    >
+                        Для добавления отзыва пожалуйста авторизируйтесь.
+                    </v-flex>
                     <v-dialog
                     v-model    = "dialog"
                     :disabled  = "returnDataCheckAuthorization"
@@ -97,10 +104,11 @@
                     </v-card-title>
                     </v-flex>
                     <v-flex xs5>
-                    <v-img 
-                        :src   = "item.src" 
-                        height = "125px" 
-                        contain></v-img>
+                        <v-img 
+                            :src   = "item.src" 
+                            height = "125px" 
+                            contain>
+                        </v-img>
                     </v-flex>
                 </v-layout>
                 <v-divider light></v-divider>
@@ -123,7 +131,6 @@ export default {
         };
     },
     async created() {
-        console.log('dfsdfsd');
         let dataRreviews = await review.read();
 
         let arrReviewsObj = dataRreviews.data.map((item, i) => {
@@ -135,14 +142,23 @@ export default {
 
             return reviewsObj;
         });
-    console.log(arrReviewsObj);
-      this.addNewReviews(arrReviewsObj);
+
+        let arrayLocalStorage = Object.values(localStorage);
+
+        /*add to storage status user from localStorage*/
+        arrayLocalStorage.forEach((item, i) => {
+            localStorage.key(i) === 'userIsAuth:' ? this.addUser(localStorage.getItem(localStorage.key(i)))
+                                                  : ''
+        });
+
+        this.addNewReviews(arrReviewsObj);
     },
     methods: {
         ...mapActions("reviewsSlider", ['addNewReviews']),
-
+        ...mapActions('user', ['addUser']),
         addReviews() {
             this.dialog = false;
+
             let myReviews = {
                 reviewsText: this.textReviews,
                 namePearson: "Адамович Артур",
@@ -157,11 +173,14 @@ export default {
             arrayRivews       : "dataReviewsSlider",
             checkAthorization : "checkAuth"
         }),
+        ...mapState('user', ['user']),
+
         returnDataReviewsSlider() {
             return this.arrayRivews;
         },
         returnDataCheckAuthorization() {
-            return this.checkAthorization;
+            return this.user === 'true' ? false 
+                                        : true
         }
     }
 };
