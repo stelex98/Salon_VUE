@@ -21,13 +21,17 @@ router.get('/read', (req, res) => {
 
 router.post('/add', async function (req, res) {
     try{
-        //let id_client = (await queries.getClientId(req.body.id))[0].id;
-        let id_client = (await queries.getClientId(req.session.id))[0];
+        let id_user   = req.session.id;
+
+        let id_client = (await queries.getClientId(id_user))[0].id;
+
         let review_cl = {
-            id_client: id_client,
-            review   : req.body.review
+            id_client : id_client,
+            review    : req.body.review
         }
+
         review_cl = (await queries.addReview(review_cl))[0];
+        
         res.send(review_cl);
     }
     catch(error){
