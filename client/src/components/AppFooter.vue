@@ -5,7 +5,7 @@
         <v-card-title class="grey lighten-2">
           <v-layout row wrap justify-center align-center>
             <v-flex d-flex md9 sm8 xs9>
-              <strong class="subheading black--text">&copy; Косметический салон - Visavis</strong>
+              <strong class="subheading black--text">&copy; Косметический салон - Beauty</strong>
             </v-flex>
             <v-flex d-flex md3 sm4 xs12>
               <v-btn v-for="icon in icons" :key="icon" class="mx-3" light icon>
@@ -16,8 +16,8 @@
         </v-card-title>
 
         <v-card-actions class="grey darken-3 justify-center">
-          &copy;2018 —
-          <strong>Visavis</strong>
+          &copy;2019 —
+          <strong>Beauty</strong>
         </v-card-actions>
       </v-card>
     </v-footer>

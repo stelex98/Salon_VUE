@@ -154,17 +154,18 @@ export default {
         this.addNewReviews(arrReviewsObj);
     },
     methods: {
-        ...mapActions("reviewsSlider", ['addNewReviews']),
+        ...mapActions("reviewsSlider", ['addNewReviews', 'addOneNewReviews']),
         ...mapActions('user', ['addUser']),
         addReviews() {
             this.dialog = false;
 
+            console.log(this.textReviews);
             let myReviews = {
                 reviewsText: this.textReviews,
                 namePearson: "Адамович Артур",
                 src: "https://visavis.by/sites/all/themes/visavis2/images/forms.jpg"
             };
-            this.addNewReviews(myReviews);
+            this.addOneNewReviews(myReviews);
             this.textReviews = null;
         }
     },
