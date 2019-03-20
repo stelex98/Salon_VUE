@@ -7,7 +7,7 @@
 		>
 
 			<v-parallax 
-				height = "800" 
+				height = "600" 
 				src	   = "https://visavis.by/sites/all/themes/visavis2/images/forms.jpg"
 			>
 				<v-layout 
@@ -46,10 +46,10 @@
 							>
 								<v-container>
 									<v-layout 
+                                        style = "margin-top: 13%"
 										row 
 										justify-center 
 										wrap 
-										style = "margin-top: 13%"
 									>
 										<v-flex 
 											md8 
