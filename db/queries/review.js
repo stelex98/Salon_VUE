@@ -34,7 +34,8 @@ function getClientId(id) {
 //-----------------INSERT----------------
 
 function addReview(review){
-	return knex.insert(review).returning('*').into('review');
+    return knex.insert(review)
+               .into('review');
 }
 
 //----------------UPDATE------------------
