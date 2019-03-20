@@ -5,12 +5,17 @@ const helper   = require('../helper')
 
 const router   = express.Router();
 
-router.post('/login/check', (req, res) => {
-    queries.checkLogin(req.body.login)
-	.then(data => {
-		res.send( data[0] !== undefined ? true : false );
-	})
-	.catch(error => console.log(`Error: ${error}`));
+router.post('/login/check', async function ( req, res ){
+	try{
+		let login = req.body.login;
+		let check = (await queries.checkLogin(login))[0];
+		check = (check === undefined ? false : true);
+		
+		res.send(check);
+	}
+	catch(error){
+		console.log(`Error: ${error}`);
+	}
 });
 
 router.post('/sign_up', async function(req, res) {
@@ -52,19 +57,22 @@ router.post('/sign_up', async function(req, res) {
 router.post('/log_in', async function(req, res) {
 	try{
 		let user = (await queries.checkLogin(req.body.log))[0];
+
+		let role = null;
+
 		if(user !== undefined){
+
 			if(helper.checkPassword(user.password, user.salt, req.body.pass, req.body.salt)){
+
 				req.session.login = user.login;
 				req.session.id    = user.id;
 				req.session.role  = user.role;
-				res.send(user.role);
-			}
-			else			
-				res.send(null);
+				role = user.role;
+			}	
+
 		}
-		else
-			res.send(null);
 		
+		res.send(role);
 	}
 	catch(error){
 		console.log(`Error: ${error}`)
