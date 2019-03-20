@@ -25,7 +25,8 @@ function getReviews() {
 // }
 
 function getClientId(id) {
-    return knex.select('id')
+    return knex.select('client.id', 'profile.photo', 'profile.name')
+               .join('profile', 'client.id_profile', 'profile.id')
                .where({ 'id_user': parseInt(id) })
                .from('client');
 }
@@ -33,7 +34,8 @@ function getClientId(id) {
 //-----------------INSERT----------------
 
 function addReview(review){
-	return knex.insert(review).returning('*').into('review');
+    return knex.insert(review)
+               .into('review');
 }
 
 //----------------UPDATE------------------
