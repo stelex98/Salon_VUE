@@ -157,10 +157,13 @@ export default {
     methods: {
         ...mapActions("reviewsSlider", ['addNewReviews', 'addOneNewReviews']),
         ...mapActions('user', ['addUser']),
-        async addReviews() {
+         async addReviews() {
             this.dialog = false;
-            let dataPearson = await review.addOne(this.textReviews);
+            console.log('asdfasdfasd');
+            let dataPearson =  await review.addOne(this.textReviews);
             console.log('Review: ', dataPearson.data);
+
+
             let myReviews = {
                 reviewsText: this.textReviews,
                 namePearson: "Адамович Артур",

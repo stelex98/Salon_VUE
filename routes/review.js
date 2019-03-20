@@ -21,8 +21,9 @@ router.get('/read', (req, res) => {
 
 router.post('/add', async function (req, res) {
     try{
-        let id_user   = req.session.id;
-
+        //console.log(req.sesssion);
+        let id_user   = req.body.id_user;
+        //let id_user   = req.session.cid;
         let client = (await queries.getClientId(id_user))[0];
 
         let review_cl = {

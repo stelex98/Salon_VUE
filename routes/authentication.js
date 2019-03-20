@@ -63,10 +63,11 @@ router.post('/log_in', async function(req, res) {
 		if(user !== undefined){
 
 			if(helper.checkPassword(user.password, user.salt, req.body.pass, req.body.salt)){
-
+				console.log(user.id);
 				req.session.login = user.login;
-				req.session.id    = user.id;
+				req.session.cid    = user.id;
 				req.session.role  = user.role;
+				console.log(req.session.cid);
 				role = user.role;
 			}	
 
