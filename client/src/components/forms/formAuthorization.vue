@@ -143,6 +143,7 @@ export default {
             /* check auth user*/
             checkUser = await request.authorization(objUser);
 
+            console.log(checkUser);
             /*show alert if user is't auth (error login/pass) */
             checkUser.data.length === 0 ? this.showAlert = true
                                         : this.showAlert = false;
