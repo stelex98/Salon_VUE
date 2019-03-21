@@ -26,13 +26,18 @@ function getDiscountFullVersion() {
 
 //-------------------SELECT--------------------
 
-
+function getDiscount(id) {
+    return knex.select('*')
+               .join('discount', 'service.id', 'discount.id_service')
+               .from('service')
+               .where({ 'discount.id' : parseInt(id) });
+}
 
 //-----------------INSERT----------------
 
 function addDiscount(discount){
     return knex.insert(discount)
-               .returning('*')
+               .returning('id')
                .into('discount');
 }
 
@@ -56,6 +61,7 @@ function deleteDiscount(id){
 module.exports = {
     getDiscountShortVersion,
     getDiscountFullVersion,
+    getDiscount,
     addDiscount,
     updateDiscount,
     deleteDiscount

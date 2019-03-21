@@ -5,11 +5,11 @@ const url         = 'http://localhost:3010/discount';
 const apiDiscount = {};
 
 apiDiscount.readDiscountForMainPage = function () {
-    return axios.get(`${url}/read/short/version`);
+    return axios.get(`${url}/readShortVersion`);
 }
 
 apiDiscount.readDiscountForDiscountPage = function () {
-    return axios.get(`${url}/read/full/version`);
+    return axios.get(`${url}/readFullVersion`);
 }
 
 apiDiscount.add = function (discount) {
