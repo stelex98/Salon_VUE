@@ -1,37 +1,95 @@
 const express = require('express');
 const queries = require('../db/queries/discount');
 
+
 const router  = express.Router();
 
-//--------GET---------
+// █████████████████████████████████████████ //
+// ███████████████    GET    ███████████████ //
+// █████████████████████████████████████████ //
 
-router.get('/read/short/version', (req, res) => {
-	queries.getDiscountShortVersion()
-    .then(data => {
-        res.send(data);
-    })
-    .catch(error => console.log(`Error: ${error}`));
+/**
+ * disconts = [{
+ *      id       - id акции
+ *      discount - процент скидки
+ *      service  - услуга
+ *      about_service - информация о услуге
+ * }, {}] 
+*/
+router.get('/readShortVersion', async function (req, res) {
+    try{
+        let disconts = await queries.getDiscountShortVersion();
+
+        res.send(disconts);
+    }
+    catch(error){
+        console.log(`Error: ${error}`) 
+    }
 });
 
-router.get('/read/full/version', (req, res) => {
-	queries.getDiscountFullVersion()
-    .then(data => {
-        res.send(data);
-    })
-    .catch(error => console.log(`Error: ${error}`));
+/**
+ *  discounts = [{
+ *      id            - id скидки
+ *      id_service    - id услуги
+ *      discount      - процент скидки
+ *      date          - дата, до которого дня скидка
+ *      service       - название услуги
+ *      id_group      - id группы услуг
+ *      price         - цена
+ *      picture       - картинка услуги
+ *      about_service - информация о услуге
+ * }, {}]
+*/
+router.get('/readFullVersion', async function (req, res) {
+    try{
+        let disconts = await queries.getDiscountFullVersion();
+        console.log(disconts);
+        res.send(disconts);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
 });
 
+// █████████████████████████████████████████ //
+// ███████████████  GET(id)  ███████████████ //
+// █████████████████████████████████████████ //
 
-//-------GET(id)------
 
-//--------POST--------
 
-router.post('/add', (req, res) => {
-	queries.addDiscount(req.body)
-    .then(data => {
-        res.send(data);
-    })
-    .catch(error => console.log(`Error: ${error}`));
+// █████████████████████████████████████████ //
+// ███████████████    POST   ███████████████ //
+// █████████████████████████████████████████ //
+
+/**
+ * req.body = {
+ *      id_service - id услуги
+ *      discount   - процент скидки
+ *      date       - дата, до которого дня скидка
+ * } 
+ * 
+ * discount = {
+ *      id            - id скидки
+ *      id_service    - id услуги
+ *      discount      - процент скидки
+ *      date          - дата, до которого дня скидка
+ *      service       - название услуги
+ *      id_group      - id группы услуг
+ *      price         - цена
+ *      picture       - картинка услуги
+ *      about_service - информация о услуге
+ * }
+*/
+router.post('/add', async function (req, res) {
+    try{
+        let id_discount = (await queries.addDiscount(req.body))[0];
+        let discount     = (await queries.getDiscount(id_discount))[0];
+        
+        res.send(discount);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
 });
 
 //---------PUT--------
