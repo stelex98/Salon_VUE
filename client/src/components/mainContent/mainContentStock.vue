@@ -124,6 +124,7 @@ export default {
         });
 
         this.allDiscountForUsers = allDiscount.data;
+        console.log(allDiscount.data);
     },
     methods: {
         ...mapActions("stock", ["addNewCurrentStock"]),

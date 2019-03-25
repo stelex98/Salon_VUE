@@ -178,7 +178,7 @@ export default {
 
             this.dialog = false;
 
-            console.log(reqObjStock, a);
+            console.log(reqObjStock, a.data);
             
             //this.addNewStock(this.reqObjStock);
         },
