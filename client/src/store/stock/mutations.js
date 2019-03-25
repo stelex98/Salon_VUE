@@ -3,8 +3,8 @@ export default {
         state.currentStock[0] = payload;
     },
     addNewCurrentStockAdmin(state, payload) {
-        state.currentIndexStockForAdmin[0] = payload;
-        state.currentStockForAdmin[0] = state.stock[payload];
+        //state.currentIndexStockForAdmin[0] = payload;
+        state.currentStockForAdmin = payload;
     },
     addNewStock(state, payload) {
         state.stock.push(payload);

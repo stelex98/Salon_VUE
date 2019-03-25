@@ -127,6 +127,7 @@
 import fileUploadButton from "@/components/forms/fileUploadButton.vue";
 import { mapActions } from "vuex";
 import request from '../../../request/service'
+import requsetDiscount from '../../../request/discount'
 
 export default {
     async created() {
@@ -165,17 +166,21 @@ export default {
     methods: {
         ...mapActions("stock", ["addNewStock"]),
 
-        saveNewInf() {
+        async saveNewInf() {
             let reqObjStock = {
-                idService       : this.idService,
-                idTypeOfService : this.idTypeOfService,
-                date            : this.date,
-                discount        : this.discount
+                // idService       : this.idService,
+                id_service      : this.idTypeOfService,
+                discount        : this.discount,
+                date            : this.date
             };
 
+            let a = await requsetDiscount.add(reqObjStock);
+
             this.dialog = false;
+
+            console.log(reqObjStock, a);
             
-            //this.addNewStock(this.newStockObg);
+            //this.addNewStock(this.reqObjStock);
         },
         async checkIdService(){
             let res = await request.readServiceByType(this.idService);
