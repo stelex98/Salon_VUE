@@ -55,7 +55,30 @@ router.get('/readFullVersion', async function (req, res) {
 // ███████████████  GET(id)  ███████████████ //
 // █████████████████████████████████████████ //
 
-
+/** 
+ * discount = {
+ *      id            - id скидки
+ *      id_service    - id услуги
+ *      discount      - процент скидки
+ *      date          - дата, до которого дня скидка
+ *      service       - название услуги
+ *      id_group      - id группы услуг
+ *      price         - цена
+ *      picture       - картинка услуги
+ *      about_service - информация о услуге
+ * }
+*/
+router.get('/readOne/:id', async function (req, res) {
+    try{
+        let id_discount = req.params.id;
+        let discount     = (await queries.getDiscount(id_discount))[0];
+        
+        res.send(discount);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
+});
 
 // █████████████████████████████████████████ //
 // ███████████████    POST   ███████████████ //

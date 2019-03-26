@@ -12,6 +12,10 @@ apiDiscount.readDiscountForDiscountPage = function () {
     return axios.get(`${url}/readFullVersion`);
 }
 
+apiDiscount.readOne = function (id_discount) {
+    return axios.get(`${url}/readOne/${id_discount}`);
+}
+
 apiDiscount.add = function (discount) {
     return axios.post(`${url}/add`, discount);
 }
