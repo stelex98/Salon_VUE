@@ -6,6 +6,7 @@ const router  = express.Router();
 //--------GET---------
 
 router.get('/read', (req, res) => {
+    console.log(req.session);
 	queries.getReviews()
     .then(data => {
         res.send(data);
@@ -21,15 +22,13 @@ router.get('/read', (req, res) => {
 
 router.post('/add', async function (req, res) {
     try{
-        let id_user   = req.session.id;
-
+        let id_user   = req.session.cid;
         let client = (await queries.getClientId(id_user))[0];
 
         let review_cl = {
             id_client : client.id,
             review    : req.body.review
         }
-
         await queries.addReview(review_cl);
         
         review_cl = {
