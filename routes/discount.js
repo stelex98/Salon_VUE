@@ -68,7 +68,7 @@ router.get('/readFullVersion', async function (req, res) {
  *      about_service - информация о услуге
  * }
 */
-router.get('/readOne/:id', async function (req, res) {
+router.get('/readOne/:id', async function(req, res) {
     try{
         let id_discount = req.params.id;
         let discount     = (await queries.getDiscount(id_discount))[0];
@@ -103,7 +103,7 @@ router.get('/readOne/:id', async function (req, res) {
  *      about_service - информация о услуге
  * }
 */
-router.post('/add', async function (req, res) {
+router.post('/add', async function(req, res) {
     try{
         let id_discount = (await queries.addDiscount(req.body))[0];
         let discount     = (await queries.getDiscount(id_discount))[0];
@@ -115,24 +115,47 @@ router.post('/add', async function (req, res) {
     }
 });
 
-//---------PUT--------
+// █████████████████████████████████████████ //
+// ███████████████    PUT    ███████████████ //
+// █████████████████████████████████████████ //
 
-router.put('/update/:id', (req, res) => {
-	queries.updateDiscount(req.params.id, req.body)
-    .then(data => {
-        res.send(data === 1 ? true : false);
-    })
-    .catch(error => console.log(`Error: ${error}`));
+/**
+ * req.body = {
+ *      id_service - id услуги
+ *      discount   - процент скидки
+ *      date       - дата, до которого дня скидка
+ * } 
+*/
+
+router.put('/update/:id', async function(req, res) {
+    try{
+        let id_discount = req.params.id;
+        let flagUpdate = await queries.updateDiscount(id_discount, req.body);
+        flagUpdate = (flagUpdate === 1 ? true : false);
+
+        res.send(flagUpdate);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
 });
 
-//-------DELETE-------
+// █████████████████████████████████████████ //
+// ███████████████   DELETE  ███████████████ //
+// █████████████████████████████████████████ //
 
-router.delete('/delete/:id', (req, res) => {
-	queries.deleteDiscount(req.params.id)
-    .then(data => {
-        res.send(data === 1 ? true : false);
-    })
-    .catch(error => console.log(`Error: ${error}`));
+
+router.delete('/delete/:id', async function(req, res) {
+    try{
+        let id_discount = req.params.id;
+        let flagDelete = queries.deleteDiscount(id_discount);
+        flagDelete = (flagDelete === 1 ? true : false);
+
+        res.send(flagDelete);
+    }
+    catch(error){
+        console.log(`Error: ${error}`);
+    }
 });
 
 module.exports = router;
