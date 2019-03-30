@@ -32,7 +32,7 @@
                             <template v-for = "(item, index) in arrayOfStock" >
                                 <v-list-tile 
                                     class = "container-stock"
-                                    :key  = "item.id" 
+                                    :key  = "`${item}-${item.id}`" 
                                     avatar 
                                     ripple
                                 >
@@ -56,7 +56,11 @@
                                             </v-list-tile-title>
                                             <v-list-tile-sub-title class = "text--primary">На {{ item.service }}</v-list-tile-sub-title>
 
-                                            <v-list-tile-sub-title >{{item.about_service.slice(0, 50)}} ...</v-list-tile-sub-title>
+                                            <v-list-tile-sub-title >
+                                                {{
+                                                    item.about_service.length >= 50 ? item.about_service.slice(0, 50) + '...'
+                                                                                    : item.about_service
+                                                }}</v-list-tile-sub-title>
                                         </v-list-tile-content>
                                     </v-flex>
                                     <v-list-tile-action
@@ -68,11 +72,10 @@
                                             align-end 
                                             row 
                                             justify-space-around
-                                            style = " align-items: center; "
+                                            style = " align-items: center; margin-left: auto;"
                                         >
                                             <v-flex
                                                 style      = "margin-right: 5px"
-                                                @mouseover = "addIndexCurrentStock(index)"
                                                 d-flex
                                             >
                                                 <formEditForStock></formEditForStock>
@@ -80,7 +83,7 @@
                                             <v-flex d-flex>
                                                 <v-btn
                                                     color  = "lighten-2" 
-                                                    @click = "deleteCurrentStockLocal(index)" 
+                                                    @click = "deleteCurrentStockLocal(index, item.id, item)" 
                                                     flat 
                                                     icon 
                                                 >
@@ -117,8 +120,8 @@ export default {
 
     async created() {
         let allDiscount = await request.readDiscountForDiscountPage();
-        let difference = 0;
-        
+        let difference  = 0;
+    
         let newAllDiscount = allDiscount.data.map((item, i) => {
             item.show      = false;
             difference     = (item.price * item.discount) / 100;
@@ -129,7 +132,8 @@ export default {
 
         this.allDiscountForUsers = allDiscount.data;
         this.addNewCurrentStockAdmin(this.allDiscountForUsers);
-        
+
+        console.log(this.allDiscountForUsers);
     },
     data() {
         return {
@@ -140,12 +144,17 @@ export default {
     computed: {
         ...mapState("stock", {
             arrayOfStock: "currentStockForAdmin"
-        })
+        }),
+        ...mapState('stock', ['allStock']),
     },
     methods: {
         ...mapActions("stock", ["deleteCurrentStock", "addNewCurrentStockAdmin"]),
 
-        deleteCurrentStockLocal(index) {
+        async deleteCurrentStockLocal(index, id, item) {
+            let deleteDisc = await request.delete(id);
+
+
+            console.log(item);
             this.deleteCurrentStock(index);
         },
         addIndexCurrentStock(index) {

@@ -1,5 +1,5 @@
 export default {
-    stock: [],
+    allStock: [],
     masters: [
         'Артур', 'Ольга', 'Ростислав', 'Егор Дружинин'
     ],

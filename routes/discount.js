@@ -105,7 +105,8 @@ router.put('/update/:id', (req, res) => {
 //-------DELETE-------
 
 router.delete('/delete/:id', (req, res) => {
-	queries.deleteDiscount(req.params.id)
+    console.log(req.params.id);
+    queries.deleteDiscount(req.params.id)
     .then(data => {
         res.send(data === 1 ? true : false);
     })
