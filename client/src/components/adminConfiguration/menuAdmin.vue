@@ -74,7 +74,7 @@
 export default {
   data() {
     return {
-      admins: [["Добавить мастера", "add"]],
+      admins: [['Просмотр', 'people_outline'], ["Добавить мастера", "add"]],
       pageAction: [["Услуги", "add", 'function1'], ["Акции", "add", "function2"]],
       userAction: [["Просмотр", "people_outline"]],
       anyAction: [["Настройки", "settings"], ["Выход", "exit_to_app"]]

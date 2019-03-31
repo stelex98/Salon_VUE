@@ -123,6 +123,7 @@
 import { mapState, mapActions } from "vuex";
 import review from '../../../request/review';
 
+
 export default {
     data() {
         return {
@@ -156,10 +157,13 @@ export default {
     methods: {
         ...mapActions("reviewsSlider", ['addNewReviews', 'addOneNewReviews']),
         ...mapActions('user', ['addUser']),
-        addReviews() {
+         async addReviews() {
             this.dialog = false;
+            console.log('asdfasdfasd');
+            let dataPearson =  await review.addOne(this.textReviews);
+            console.log('Review: ', dataPearson.data);
 
-            console.log(this.textReviews);
+
             let myReviews = {
                 reviewsText: this.textReviews,
                 namePearson: "Адамович Артур",

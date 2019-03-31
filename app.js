@@ -15,7 +15,21 @@ const RedisStore      = require('connect-redis')(session);
 const client  = redis.createClient();
 const app     = express();
 
+<<<<<<< HEAD
 app.use(cookieParser());
+=======
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.static('/client/public'));
+
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+
+>>>>>>> master
 app.use(session({
   store: new RedisStore({ host: 'localhost', port: 6379, client: client, ttl: 600}),
   secret: 'supersecret',

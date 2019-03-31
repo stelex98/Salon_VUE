@@ -129,8 +129,11 @@ router.post('/add', async function(req, res) {
 
 router.put('/update/:id', async function(req, res) {
     try{
+        console.log('Req body:',req.body);
         let id_discount = req.params.id;
+        console.log(id_discount);
         let flagUpdate = await queries.updateDiscount(id_discount, req.body);
+        console.log(flagUpdate);
         flagUpdate = (flagUpdate === 1 ? true : false);
 
         res.send(flagUpdate);
@@ -145,17 +148,13 @@ router.put('/update/:id', async function(req, res) {
 // █████████████████████████████████████████ //
 
 
-router.delete('/delete/:id', async function(req, res) {
-    try{
-        let id_discount = req.params.id;
-        let flagDelete = queries.deleteDiscount(id_discount);
-        flagDelete = (flagDelete === 1 ? true : false);
-
-        res.send(flagDelete);
-    }
-    catch(error){
-        console.log(`Error: ${error}`);
-    }
+router.delete('/delete/:id', (req, res) => {
+    console.log(req.params.id);
+    queries.deleteDiscount(req.params.id)
+    .then(data => {
+        res.send(data === 1 ? true : false);
+    })
+    .catch(error => console.log(`Error: ${error}`));
 });
 
 module.exports = router;
