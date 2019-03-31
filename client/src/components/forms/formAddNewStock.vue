@@ -125,8 +125,9 @@
 
 <script>
 import fileUploadButton from "@/components/forms/fileUploadButton.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import request from '../../../request/service'
+import requsetDiscount from '../../../request/discount'
 
 export default {
     async created() {
@@ -138,6 +139,7 @@ export default {
         return {
             dialog    : false,
             menu      : false,
+            allDiscountForUsers : {},
 
             /*Data for create new stock */
             idService       : 0,
@@ -162,32 +164,58 @@ export default {
     components: {
         fileUploadButton
     },
+    computed: {
+        ...mapState("stock", {
+            arrayOfStock: "currentStockForAdmin"
+        })
+    },
     methods: {
-        ...mapActions("stock", ["addNewStock"]),
+        ...mapActions('stock', ['addNewStock', 'addNewCurrentStockAdmin', 'deleteCurrentStock']),
 
-        saveNewInf() {
+        async saveNewInf() {
             let reqObjStock = {
-                idService       : this.idService,
-                idTypeOfService : this.idTypeOfService,
-                date            : this.date,
-                discount        : this.discount
+                // idService       : this.idService,
+                id_service      : this.idTypeOfService,
+                discount        : this.discount,
+                date            : this.date
             };
 
+            let a = await requsetDiscount.add(reqObjStock);
+
             this.dialog = false;
-            
-            //this.addNewStock(this.newStockObg);
+
+            this.addNewStock(a.data);
+
+            this.getAllStock();
+            this.resetData();
         },
         async checkIdService(){
             let res = await request.readServiceByType(this.idService);
-
+            
             this.allTypeOfServices = res.data;
         },
+        async getAllStock(){
+            let allDiscount = await requsetDiscount.readDiscountForDiscountPage();
+            let difference  = 0;
+        
+            let newAllDiscount = allDiscount.data.map((item, i) => {
+                item.show      = false;
+                difference     = (item.price * item.discount) / 100;
+                item.new_price = item.price - difference;
+
+                return allDiscount.data[i]
+            });
+
+            this.allDiscountForUsers = allDiscount.data;
+            this.addNewCurrentStockAdmin(this.allDiscountForUsers);
+        },
+
         resetData() {
-            this.newStockObg.price = "";
-            this.newStockObg.service = "";
-            this.newStockObg.title = "";
+            this.newStockObg.price       = "";
+            this.newStockObg.service     = "";
+            this.newStockObg.title       = "";
             this.newStockObg.typeService = "";
-            this.newStockObg.describe = "";
+            this.newStockObg.describe    = "";
         }
     }
 };

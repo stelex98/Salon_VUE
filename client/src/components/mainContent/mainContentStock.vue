@@ -27,7 +27,7 @@
                 justify-space-between 
             >
                 <v-flex
-                    v-for = "(item, i) in allDiscountForUsers"
+                    v-for = "(item, i) in returnDataOfStock"
                     :key  = "`stock${i}`"
                     style = "margin: 0 0 5% 0;"
                     xs10
@@ -97,15 +97,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import formSignUpService from "@/components/forms/formSignUpService.vue";
 import request from '../../../request/discount'
 
 export default {
     data(){
         return {
-            allDiscountForUsers : {},
-            new_price           : 0
+            new_price : 0
         }
     },
     components: {
@@ -123,10 +122,10 @@ export default {
             return allDiscount.data[i]
         });
 
-        this.allDiscountForUsers = allDiscount.data;
+        this.addNewStock(allDiscount.data);
     },
     methods: {
-        ...mapActions("stock", ["addNewCurrentStock"]),
+        ...mapActions('stock', ['addNewCurrentStock', 'addNewStock']),
 
         currentStock(index){
             this.addNewCurrentStock(index);
@@ -135,13 +134,17 @@ export default {
     computed: {
         ...mapState('user', ['user']),
 
-        ...mapState("stock",{
-            dataOfStock: "stock"
-        }),
+        ...mapState('stock', ['allStock']),
+
+        ...mapGetters('stock', ['returnAllDataOfStock']),
+
         returnDataCheckAuthorization() {
 			return this.user === 'true' ? false 
 										: true
-		}
+        },
+        returnDataOfStock(){
+            return this.returnAllDataOfStock[0]
+        }
     }
 };
 </script>

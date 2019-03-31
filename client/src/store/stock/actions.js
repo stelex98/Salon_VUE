@@ -14,4 +14,7 @@ export default {
     editStockArray({ commit }, payload) {
         commit('editStockArray', payload);
     },
+    addCurrentStockForEdit({commit}, payload){
+        commit('addCurrentStockForEdit', payload);
+    }
 }
