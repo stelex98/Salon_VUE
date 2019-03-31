@@ -4,7 +4,7 @@ const axios    = require('axios');
 const url      = 'http://localhost:3010/human';
 const apiHuman = {};
 
-apiHuman.readMasters = function () {
+apiHuman.readAllMasters = function () {
     return axios.get(`${url}/read/masters`);
 }
 
