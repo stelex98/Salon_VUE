@@ -14,5 +14,8 @@ export default {
     },
     editStockArray(state, payload) {
         state.stock[state.currentIndexStockForAdmin[0]] = payload[0];
+    },
+    addCurrentStockForEdit(state, payload){
+        state.currentIdForEdit[0] = payload;
     }
 }

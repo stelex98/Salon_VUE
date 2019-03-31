@@ -5,5 +5,6 @@ export default {
     ],
     currentStock: [], // текущий, выбранный пользователем акция 
     currentStockForAdmin: [],
-    currentIndexStockForAdmin: []
+    currentIndexStockForAdmin: [],
+    currentIdForEdit: []
 }

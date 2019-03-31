@@ -32,17 +32,18 @@
                             <template v-for = "(item, index) in arrayOfStock" >
                                 <v-list-tile 
                                     class = "container-stock"
-                                    :key  = "`${item}-${item.id}`" 
+                                    :key  = "`${item}-${item.id}`"
                                     avatar 
                                     ripple
                                 >
-                                    <v-list-tile-avatar style = "margin-top: 0px;">
+                                    <v-list-tile-avatar style = "margin-top: 0px;" >
                                         <img 
                                             :src  = "item.picture"
                                             style = "width: 60px; height: 60px;"    
                                         >
                                     </v-list-tile-avatar>
                                     <v-flex 
+                                        @mouseover= "clickEdit(item.id)"
                                         d-flex 
                                         md10 
                                         sm8 
@@ -69,16 +70,17 @@
                                         <v-list-tile-action-text>{{ item.date.slice(0, 10) }}</v-list-tile-action-text>
 
                                         <v-layout 
+                                            style = " align-items: center; margin-left: auto;"
                                             align-end 
                                             row 
                                             justify-space-around
-                                            style = " align-items: center; margin-left: auto;"
                                         >
                                             <v-flex
-                                                style      = "margin-right: 5px"
+                                                style = "margin-right: 5px"
+                                                @mouseover = "clickEdit(item.id)" 
                                                 d-flex
-                                            >
-                                                <formEditForStock></formEditForStock>
+                                            >  
+                                                <formEditForStock ></formEditForStock>
                                             </v-flex>
                                             <v-flex d-flex>
                                                 <v-btn
@@ -132,8 +134,6 @@ export default {
 
         this.allDiscountForUsers = allDiscount.data;
         this.addNewCurrentStockAdmin(this.allDiscountForUsers);
-
-        console.log(this.allDiscountForUsers);
     },
     data() {
         return {
@@ -148,17 +148,18 @@ export default {
         ...mapState('stock', ['allStock']),
     },
     methods: {
-        ...mapActions("stock", ["deleteCurrentStock", "addNewCurrentStockAdmin"]),
+        ...mapActions("stock", ["deleteCurrentStock", "addNewCurrentStockAdmin", 'addCurrentStockForEdit']),
 
         async deleteCurrentStockLocal(index, id, item) {
             let deleteDisc = await request.delete(id);
 
-
-            console.log(item);
             this.deleteCurrentStock(index);
         },
         addIndexCurrentStock(index) {
             this.addNewCurrentStockAdmin(index);
+        },
+        clickEdit(id_discount){
+            this.addCurrentStockForEdit(id_discount)
         }
     }
 };

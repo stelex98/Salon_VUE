@@ -191,7 +191,7 @@ export default {
         },
         async checkIdService(){
             let res = await request.readServiceByType(this.idService);
-
+            
             this.allTypeOfServices = res.data;
         },
         async getAllStock(){

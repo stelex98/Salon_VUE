@@ -27,8 +27,9 @@ function getDiscountFullVersion() {
 //-------------------SELECT--------------------
 
 function getDiscount(id) {
-    return knex.select('*')
+    return knex.select('discount.id', 'group.group', 'discount.id_service', 'service.service', 'discount.discount', 'discount.date', 'service.id_group')
                .join('discount', 'service.id', 'discount.id_service')
+               .join('group', 'service.id_group', 'group.id')
                .from('service')
                .where({ 'discount.id' : parseInt(id) });
 }
