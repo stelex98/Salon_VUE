@@ -19,7 +19,7 @@
             </v-list-tile>
 
             <v-list-tile v-for="(admin, i) in admins" :key="i" @click>
-              <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
+              <v-list-tile-title v-text="admin[0]" @click = 'CheckAction($event)'></v-list-tile-title>
               <v-list-tile-action>
                 <v-icon v-text="admin[1]"></v-icon>
               </v-list-tile-action>
@@ -45,7 +45,7 @@
             </v-list-tile>
 
             <v-list-tile v-for="(crud, i) in pageAction" :key="i" @click>
-              <v-list-tile-title v-text="crud[0]" @click="function1(crud[i])"></v-list-tile-title>
+              <v-list-tile-title v-text="crud[0]" @click = 'CheckAction($event)'></v-list-tile-title>
               <v-list-tile-action>
                 <v-icon v-text="crud[1]"></v-icon>
               </v-list-tile-action>
@@ -71,21 +71,23 @@
 </template>
 
 <script>
+import {mapActions, mapMutations, mapState} from 'vuex';
+
 export default {
   data() {
     return {
       admins: [['Просмотр', 'people_outline'], ["Добавить мастера", "add"]],
-      pageAction: [["Услуги", "add", 'function1'], ["Акции", "add", "function2"]],
+      pageAction: [["Услуги", "add"], ["Акции", "add"]],
       userAction: [["Просмотр", "people_outline"]],
       anyAction: [["Настройки", "settings"], ["Выход", "exit_to_app"]]
     };
   },
   methods: {
-      function1(crud){
-          console.log(crud[2]);
-      },
-      function2(){
-          alert(2);
+    ...mapActions('user', ['addCurrentAction']),
+      CheckAction(event){
+        let currentAction = event.target.innerText;
+        this.addCurrentAction(currentAction);
+          console.log(currentAction);
       }
   }
 };
