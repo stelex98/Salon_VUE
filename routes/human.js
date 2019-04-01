@@ -97,7 +97,10 @@ router.post('/check/master', async function (req, res) {
 
 router.delete('/delete/master/:id_master', async function(req, res) {
     try{
+        console.log(req.params.id_master);
+
         let id_user = (await queries.idUser(req.params.id_master))[0].id_user;
+        console.log(id_user);
         let flag_m  = await queries.deleteMaster(req.params.id_master);
         let flag_u  = await queries.deleteUser(id_user);
 

@@ -76,6 +76,7 @@ export default {
     },
     methods: {
         async deleteItem (item) {
+            console.log(item);
             let deleteMaster = await requestAdmin.deleteMaster(item.id);
         }
     },
