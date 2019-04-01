@@ -257,9 +257,9 @@ export default {
             required,
             minLength: minLength(3),
             async checkLogin() {
-            let flag  = await apiAuthe.checkLogin(this.login);
+                let flag  = await apiAuthe.checkLogin(this.login);
 
-            return !flag.data 
+                return !flag.data 
             }
         },
         email: {
