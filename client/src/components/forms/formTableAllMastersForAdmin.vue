@@ -76,7 +76,8 @@ export default {
     },
     methods: {
         async deleteItem (item) {
-            console.log(item);
+            const index = this.desserts.indexOf(item);
+            this.desserts.splice(index, 1);
             let deleteMaster = await requestAdmin.deleteMaster(item.id);
         }
     },
