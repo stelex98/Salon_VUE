@@ -24,7 +24,7 @@
                 >
                 <td>{{ props.item.position }}</td>
                 <td>{{ props.item.name }}</td>
-                <td>{{ props.item.secondName }}</td>
+                <td>{{ props.item.surname }}</td>
                 <td>{{ props.item.login }}</td>
                 <td class = "align-center layout px-0">
                     <v-icon
@@ -39,7 +39,6 @@
                 <template v-slot:no-data>
                     <v-btn 
                         color  = "primary" 
-                        @click = "initialize"
                     >
                         Reset
                     </v-btn>
@@ -51,7 +50,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import request from "../../../request/service"
+import request from "../../../request/service";
+import requestAdmin from "../../../request/human"
 
 export default {
     data() {
@@ -60,46 +60,23 @@ export default {
             headers: [
                 { text : 'Должность',   value : 'position'    },
                 { text : 'Имя',         value : 'name'        },
-                { text : 'Фамилия',     value : 'secondName'  },
+                { text : 'Фамилия',     value : 'surname'  },
                 { text : 'Логин',       value : 'login'       },
                 { text : 'Actions',     value : 'name2'       }
             ],
             desserts: []
         };
     },
-    created() {
-        this.initialize()
+    async created() {
+        let dataOfMasters = await requestAdmin.readAllMasters();
+
+        Object.values(dataOfMasters.data).forEach(item => {
+            this.desserts.push(item);
+        });
     },
     methods: {
-        initialize () {
-            this.desserts = [
-                {
-                    position: 'СПА-массажист',
-                    name: 'Артур',
-                    secondName: 'Адамович',
-                    login: 'stelex',
-                    id: 1
-                },
-                {
-                    position: 'Макияжист',
-                    name: 'Андрей',
-                    secondName: 'Швидчэ',
-                    login: 'Andrey',
-                    id: 2
-                },
-                {
-                    position: 'Жопку мнет',
-                    name: 'Ян',
-                    secondName: 'Бондарчик',
-                    login: 'YanBond',
-                    id: 3
-                },
-            ]
-        },
-        deleteItem (item) {
-            console.log(item)
-            const index = this.desserts.indexOf(item)
-            confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+        async deleteItem (item) {
+            let deleteMaster = await requestAdmin.deleteMaster(item.id);
         }
     },
 };
