@@ -11,8 +11,9 @@
           md6 
           xs5
         >
-            <listStockForCRUD  v-if = "checkIsDiscount"></listStockForCRUD>
-            <dataTableMasters  v-if = 'checkIsTableMasters'></dataTableMasters>
+            <listStockForCRUD v-if = "checkIsDiscount"></listStockForCRUD>
+            <dataTableMasters v-if = 'checkIsTableMasters'></dataTableMasters>
+            <formAddNewMaster v-if = 'checkIsAddMasters'></formAddNewMaster>
         </v-flex>
       </v-layout>
     </v-container>
@@ -23,13 +24,15 @@
 import menuAdmin from "@/components/adminConfiguration/menuAdmin.vue";
 import listStockForCRUD from "@/components/adminConfiguration/listStockForCRUD.vue";
 import dataTableMasters from '@/components/forms/formTableAllMastersForAdmin.vue'
+import formAddNewMaster from '@/components/forms/formAddNewMaster.vue'
 import {mapState, mapGetters} from 'vuex'
 
 export default {
   components: {
     menuAdmin,
     listStockForCRUD,
-    dataTableMasters
+    dataTableMasters,
+    formAddNewMaster
   },
   computed: {
     ...mapState('user', ['currentAction']),
@@ -42,16 +45,22 @@ export default {
       this.isTableMasters = (this.currentAction  === 'Просмотр' ? true: false);
 
       return this.isTableMasters;
+    },
+    checkIsAddMasters(){
+      this.isAddMasters = (this.currentAction  === 'Добавить мастера' ? true: false);
+
+      return this.isAddMasters;
     }
   },
   data() {
     
     return {
-      check: true,
-      check2: false,
-      isDiscount: this.currentAction,
-      isServices: this.currentAction,
-      isTableMasters: this.currentAction
+      check          : true,
+      check2         : false,
+      isDiscount     : this.currentAction,
+      isServices     : this.currentAction,
+      isTableMasters : this.currentAction,
+      isAddMasters   : this.currentAction
     }
   }
 };

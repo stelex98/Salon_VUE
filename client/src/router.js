@@ -48,7 +48,7 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: AppAdminPage
-    },
+    }
   ],
   mode: 'history'
 })
