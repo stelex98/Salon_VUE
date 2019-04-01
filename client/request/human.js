@@ -12,10 +12,6 @@ apiHuman.addMaster = function (master) {
     return axios.post(`${url}/add/master`, master);
 }
 
-apiHuman.checkMaster = function (master) {
-    return axios.post(`${url}/check/master`, master);
-}
-
 apiHuman.deleteMaster = function (id_master) {
     return axios.delete(`${url}/delete/master/${id_master}`);
 }
