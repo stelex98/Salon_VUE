@@ -8,9 +8,10 @@ const knex = require('../connection');
 
 //------------------SELECT *-----------------------
 
-function getMasters() {
-    return knex.select('master.id', 'master.name', 'master.surname', 'position.position')
+function getAllMasters() {
+    return knex.select('master.id', 'master.name', 'master.surname', 'public.user.login', 'position.position')
                .join('position', 'master.id_position', 'position.id')
+               .join('public.user', 'master.id_user', 'public.user.id')
                .from('master');
 }
 
@@ -34,7 +35,7 @@ function idUser(id_master){
 //-----------------INSERT----------------
 
 function addMaster(master){
-	return knex.insert(master).returning('*').into('master');
+	return knex.insert(master).into('master');
 }
 
 //----------------UPDATE------------------
@@ -58,7 +59,7 @@ function deleteUser(id_user){
 
 
 module.exports = {
-    getMasters,
+    getAllMasters,
     addMaster,
     checkMaster,
     deleteMaster,
