@@ -28,5 +28,26 @@ apiService.readPosition = function (id_group) {
     return axios.get(`${url}/position`);
 }
 
+apiService.readAllServices = function () {
+    return axios.get(`${url}/readAllServices`);
+}
+
+apiService.readGroups= function () {
+    return axios.get(`${url}/readGroups`);
+}
+
+apiService.add = function (service) {
+    return axios.post(`${url}/add`, service);
+}
+
+apiService.update = function (id_service, new_service) {
+    return axios.put(`${url}/update/${id_service}`, new_service);
+}
+
+apiService.delete = function (id_service) {
+    return axios.delete(`${url}/delete/${id_service}`);
+}
+
+
 export default apiService;
 
