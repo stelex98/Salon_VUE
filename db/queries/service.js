@@ -30,6 +30,13 @@ function getGroup() {
                .from('group');
 }
 
+function readAllServices() {
+    return knex.select('*')
+               .join('service', 'group.id', 'service.id_group')
+               .from('group')
+               .orderBy(['group.id', 'service.id']);
+}
+
 //-------------------SELECT--------------------
 
 function getOneService(service) {
@@ -71,5 +78,6 @@ module.exports = {
     getGroup,
     getServicesOneGroup,
     addService,
-    getPosition
+    getPosition,
+    readAllServices
 };

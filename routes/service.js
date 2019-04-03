@@ -3,7 +3,9 @@ const queries = require('../db/queries/service');
 
 const router  = express.Router();
 
-//--------GET---------
+// █████████████████████████████████████████ //
+// ███████████████    GET    ███████████████ //
+// █████████████████████████████████████████ //
 
 router.get('/read/by_group', (req, res) => {
 	queries.getServicesByGroup()
@@ -37,7 +39,31 @@ router.get('/position', (req, res) => {
     .catch(error => console.log(`Error: ${error}`));
 });
 
-//-------GET(id)------
+/**
+ * services = [{
+ *      id       - id услуги
+ *      service  - услуга ( например Спа для рук)
+ *      id_group - id группы услуг
+ *      group    - группа услуг ( например Спа)
+ *      price    - стоимость услуги
+ *      picture  - фитография услуги
+ *      about_service - информация о услуге
+ * }, {}] 
+*/
+router.get('/readAllServices', async function(req, res) {
+    try{
+        let services = await queries.readAllServices();
+
+        res.send(services);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
+});
+
+// █████████████████████████████████████████ //
+// ███████████████  GET(id)  ███████████████ //
+// █████████████████████████████████████████ //
 
 router.get('/read_one/:service', (req, res) => {
 	queries.getOneService(req.params.service)
@@ -55,7 +81,9 @@ router.get('/read/service/:id', (req, res) => {
     .catch(error => console.log(`Error: ${error}`));
 });
 
-//--------POST--------
+// █████████████████████████████████████████ //
+// ███████████████    POST   ███████████████ //
+// █████████████████████████████████████████ //
 
 router.post('/add', (req, res) => {
 	queries.addService(req.body)
@@ -65,9 +93,15 @@ router.post('/add', (req, res) => {
     .catch(error => console.log(`Error: ${error}`));
 });
 
-//---------PUT--------
+// █████████████████████████████████████████ //
+// ███████████████    PUT    ███████████████ //
+// █████████████████████████████████████████ //
 
-//-------DELETE-------
+
+
+// █████████████████████████████████████████ //
+// ███████████████   DELETE  ███████████████ //
+// █████████████████████████████████████████ //
 
 
 module.exports = router;

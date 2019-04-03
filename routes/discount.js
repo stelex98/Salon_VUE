@@ -126,7 +126,6 @@ router.post('/add', async function(req, res) {
  *      date       - дата, до которого дня скидка
  * } 
 */
-
 router.put('/update/:id', async function(req, res) {
     try{
         console.log('Req body:',req.body);
