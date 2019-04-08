@@ -14,6 +14,7 @@
             <listStockForCRUD v-if = "checkIsDiscount"></listStockForCRUD>
             <dataTableMasters v-if = 'checkIsTableMasters'></dataTableMasters>
             <formAddNewMaster v-if = 'checkIsAddMasters'></formAddNewMaster>
+            <formAddNewService></formAddNewService>
         </v-flex>
       </v-layout>
     </v-container>
@@ -25,6 +26,7 @@ import menuAdmin from "@/components/adminConfiguration/menuAdmin.vue";
 import listStockForCRUD from "@/components/adminConfiguration/listStockForCRUD.vue";
 import dataTableMasters from '@/components/forms/formTableAllMastersForAdmin.vue'
 import formAddNewMaster from '@/components/forms/formAddNewMaster.vue'
+import formAddNewService from '@/components/forms/formAddNewService.vue'
 import {mapState, mapGetters} from 'vuex'
 
 export default {
@@ -32,7 +34,8 @@ export default {
     menuAdmin,
     listStockForCRUD,
     dataTableMasters,
-    formAddNewMaster
+    formAddNewMaster,
+    formAddNewService
   },
   computed: {
     ...mapState('user', ['currentAction']),
