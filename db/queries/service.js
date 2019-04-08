@@ -25,7 +25,7 @@ function getPosition() {
                .from('position');
 }
 
-function getGroup() {
+function readGroups () {
     return knex.select('*')
                .from('group');
 }
@@ -39,10 +39,11 @@ function readAllServices() {
 
 //-------------------SELECT--------------------
 
-function getOneService(service) {
+function readOneService(id) {
     return knex.select('*')
-               .from('service')
-               .where({ 'service': String(service) });
+               .from('group')
+               .join('service', 'group.id', 'service.id_group')
+               .where({ 'service.id': parseInt(id) });
 }
 
 function getServicesOneGroup(id_group) {
@@ -58,26 +59,36 @@ function getServicesOneGroup(id_group) {
 
 function addService(service){
     return knex.insert(service)
-               .returning('*')
+               .returning('id')
                .into('service');
 }
 
 //----------------UPDATE------------------
 
-
+function updateService(id, new_service){
+    return knex.update(new_service)
+               .from('service')
+               .where({ 'id': parseInt(id) });
+}
 
 //----------------DELETE------------------
 
-
+function deleteService(id){
+    return knex.del()
+               .from('service')
+               .where({ 'id': parseInt(id) });
+}
 
 
 module.exports = {
     getServicesByGroup,
-    getOneService,
+    readOneService,
     getPrices,
-    getGroup,
     getServicesOneGroup,
     addService,
     getPosition,
-    readAllServices
+    readAllServices,
+    readGroups,
+    updateService,
+    deleteService,
 };

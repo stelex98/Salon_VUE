@@ -170,7 +170,8 @@ export default {
   },
   methods: {
     async returnDescribe(currentService) {
-        let serviceDescribe = await request.readOne(currentService);
+        //тут поменять название сервиса на id
+        let serviceDescribe = await request.readOneService(currentService);
         
         this.describe[0].describe = serviceDescribe.data[0].about_service;
         this.describe[0].price    = serviceDescribe.data[0].price;

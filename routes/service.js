@@ -23,14 +23,6 @@ router.get('/read/price', (req, res) => {
     .catch(error => console.log(`Error: ${error}`));
 });
 
-router.get('/read/service_type', (req, res) => {
-	queries.getGroup()
-    .then(data => {
-        res.send(data);
-    })
-    .catch(error => console.log(`Error: ${error}`));
-});
-
 router.get('/position', (req, res) => {
 	queries.getPosition()
     .then(data => {
@@ -40,13 +32,30 @@ router.get('/position', (req, res) => {
 });
 
 /**
+ * groups = [{
+ *      id    - id группы
+ *      group - группа услуг ( например Спа)
+ * }, {}] 
+*/
+router.get('/readGroups', async function(req, res) {
+    try{
+        const groups = await queries.readGroups();
+
+        res.send(groups);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
+});
+
+/**
  * services = [{
  *      id       - id услуги
  *      service  - услуга ( например Спа для рук)
  *      id_group - id группы услуг
  *      group    - группа услуг ( например Спа)
  *      price    - стоимость услуги
- *      picture  - фитография услуги
+ *      picture  - фотография услуги
  *      about_service - информация о услуге
  * }, {}] 
 */
@@ -65,12 +74,25 @@ router.get('/readAllServices', async function(req, res) {
 // ███████████████  GET(id)  ███████████████ //
 // █████████████████████████████████████████ //
 
-router.get('/read_one/:service', (req, res) => {
-	queries.getOneService(req.params.service)
-    .then(data => {
-        res.send(data);
-    })
-    .catch(error => console.log(`Error: ${error}`));
+/**
+ * service = {
+ *      service  - услуга (например СПА для рук)
+ *      group    - группa услуг (например СПА)
+ *      price    - стоимость услуги
+ *      picture  - фитография услуги
+ *      about_service - информация о услуге
+ * }
+*/
+router.get('/readOneService/:id', async function(req, res) {
+    try{
+        let result = await queries.readOneService(req.params.id);
+        const service = result[0];
+        console.log(service);
+        res.send(service);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
 });
 
 router.get('/read/service/:id', (req, res) => {
@@ -85,23 +107,75 @@ router.get('/read/service/:id', (req, res) => {
 // ███████████████    POST   ███████████████ //
 // █████████████████████████████████████████ //
 
-router.post('/add', (req, res) => {
-	queries.addService(req.body)
-    .then(data => {
-        res.send(data);
-    })
-    .catch(error => console.log(`Error: ${error}`));
+/**
+ * service (req.body) = {
+ *      service  - услуга ( например Спа для рук)
+ *      id_group - id группы услуг
+ *      price    - стоимость услуги
+ *      picture  - фитография услуги
+ *      about_service - информация о услуге
+ * }
+*/
+router.post('/add', async function(req, res) {
+    try{
+        let service = req.body;
+        const id_service = (await queries.addService(service))[0];
+        service = (await queries.readOneService(id_service))[0];
+
+        res.send(service);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
 });
+
 
 // █████████████████████████████████████████ //
 // ███████████████    PUT    ███████████████ //
 // █████████████████████████████████████████ //
 
+/**
+ * new_service = {
+ *      service  - услуга ( например Спа для рук)
+ *      id_group - id группы услуг
+ *      price    - стоимость услуги
+ *      picture  - фотография услуги
+ *      about_service - информация о услуге
+ * } 
+*/
+router.put('/update/:id', async function(req, res) {
+    try{
+        const new_service = req.body;
+        const id_service  = req.params.id;
 
+        let flagUpdate = await queries.updateService(id_service, new_service);
+
+        flagUpdate = (flagUpdate === 1 ? true : false);
+
+        res.send(flagUpdate);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
+});
 
 // █████████████████████████████████████████ //
 // ███████████████   DELETE  ███████████████ //
 // █████████████████████████████████████████ //
+
+router.delete('/delete/:id', async function(req, res) {
+    try{
+        const id_service  = req.params.id;
+
+        let flagDelete = await queries.deleteService(id_service);
+        flagDelete = (flagDelete === 1 ? true : false);
+
+        res.send(flagDelete);
+    }
+    catch(error){
+        console.log(`Error: ${error}`)
+    }
+});
 
 
 module.exports = router;

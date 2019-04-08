@@ -28,7 +28,7 @@ router.post('/signUp', async function(req, res) {
 			salt    : crypt.salt
 		};
 		let id_user = (await queries.addUser(user))[0];
-console.log('************************  ', user.password);
+
 		let photo = helper.writeImageInFile(req.body.photo, req.body.login);
 		
 		let profile = {
@@ -57,29 +57,25 @@ console.log('************************  ', user.password);
 router.post('/signInByCredential', async function(req, res) {
 	try{
 		let user = (await queries.checkLogin(req.body.log))[0];
-
 		let role = null;
 
 		if(user !== undefined){
 
 			if(helper.checkPassword(user.password, user.salt, req.body.pass, req.body.salt)){
-				console.log(user.id);
+				
 				req.session.login = user.login;
 				req.session.cid    = user.id;
 				req.session.role  = user.role;
-				console.log(req.session.cid);
+				
 				role = user.role;
 				req.session.save();
 			}	
-
 		}
-		
 		res.send(role);
 	}
 	catch(error){
 		console.log(`Error: ${error}`)
 	}
-	
 });
 
 

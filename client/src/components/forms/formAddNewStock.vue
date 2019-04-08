@@ -131,7 +131,7 @@ import requsetDiscount from '../../../request/discount'
 
 export default {
     async created() {
-        let res  = await request.readServiceType();
+        let res  = await request.readGroups();
         
         this.allServices = res.data;
     },
