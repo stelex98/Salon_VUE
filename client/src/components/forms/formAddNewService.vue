@@ -32,13 +32,13 @@
                                         v-model    = 'objService'
                                         :items     = 'serviceArr'
                                         item-value = 'id'
-                                        item-text  = 'service'
+                                        item-text  = 'group'
                                         :label     = "currentService"
                                         @input     = "checkService()"
                                         return-object
                                     ></v-select>
                                 </v-flex>
-                                <v-flex xs12 sm6 md6>
+                                <v-flex xs12 sm6 md6 v-if = 'showFieldEdit' >
                                      <v-select 
                                         v-model    = 'objGroup'
                                         :items     = 'groupArr'
@@ -48,6 +48,9 @@
                                         @input     = 'checkGroup()'
                                          return-object
                                     ></v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md6 v-if = 'showFieldAddService' >
+                                      <v-text-field v-model = "currentNewService" label = "Новая услуга"></v-text-field>
                                 </v-flex>
                                 <v-flex md6>
                                     <v-flex xs12 sm6 md12>
@@ -101,9 +104,9 @@
                 <td>{{ props.item.service }}</td>
                 <td class = "text-xs-right">{{ props.item.group }}</td>
                 <td class = "text-xs-right">{{ props.item.price }}</td>
-                <td class = "text-xs-right">{{ props.item.aboutService }}</td>
+                <td class = "text-xs-right">{{ props.item.about_service }}</td>
                 <td class = "text-xs-right">
-                    <v-img :src = 'props.item.photo' style = 'width: 30px; height: 30px;'></v-img>
+                    <v-img :src = 'props.item.picture' style = 'width: 30px; height: 30px;'></v-img>
                 </td>
                 <td class = "justify-center layout px-0 align-center" >
                     <v-icon
@@ -134,48 +137,35 @@
 </template>
 
 <script>
+    import requestService from '../../../request/service';
+
     export default {
         data(){
             return {
-                dialog    : false,
-                imageName : '',
-                imageFile : '',
-                urlImage  : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
-                dialog    : false,
+                dialog              : false,
+                imageName           : '',
+                imageFile           : '',
+                urlImage            : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
+                dialog              : false,
+                showFieldAddService : false,
+                showFieldEdit       : false,
 
-                serviceArr: [
-                    {
-                        id: 1,
-                        service: 'СПА'
-                    },
-                    {
-                        id: 2,
-                        service: 'Массаж'
-                    }
-                ],
-                groupArr: [
-                    {
-                        id: 30,
-                        group: 'СПА-Массаж'
-                    },
-                    {
-                        id: 24,
-                        group: 'Массаж тела'
-                    }
-                ],
+                serviceArr: [],
+                groupArr: [],
                 objService : 0,
                 objGroup   : 0,
                 headers: [
                     { text : 'Услуга',    value : 'service' },
                     { text : 'Группа',    value : 'group' },
                     { text : 'Цена',      value : 'price' },
-                    { text : 'Об услуге', value : 'aboutService' },
-                    { text : 'Фото',      value : 'photo' },
+                    { text : 'Об услуге', value : 'about_service' },
+                    { text : 'Фото',      value : 'picture' },
                     { text : 'Actions',   value : 'name', sortable: false }
                 ],
                 desserts       : [],
                 currentIndexOf : -1,
 
+                
                 currentService      : '',
                 currentGroup        : '',
                 currentPrice        : 0 ,
@@ -183,6 +173,9 @@
                 currentPhoto        : '',
                 currentId           : 0,
                 currentIdItem       : 0,
+                currentIdGroup      : 0,
+
+                currentNewService   : ''
             }
         },
           computed: {
@@ -196,8 +189,14 @@
             }
         },
 
-        created () {
-            this.initialize()
+        async created () {
+            this.initialize();
+
+            let allService = await requestService.readAllServices();
+            this.desserts = allService.data;
+
+            let groupService = await requestService.readGroups();
+            this.serviceArr = groupService.data;
         },
 
         methods: {
@@ -207,16 +206,16 @@
                         service      : 'СПА',
                         group        : 'СПА-массаж',
                         price        : 25,
-                        aboutService : 'Клевый массаж',
-                        photo        : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
+                        about_service : 'Клевый массаж',
+                        picture        : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
                         id           : 10
                     },
                     {
                         service      : 'Массаж',
                         group        : 'Массаж тела',
                         price        : 30,
-                        aboutService : 'Массаж тела очень помогает старым людям',
-                        photo        : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
+                        about_service : 'Массаж тела очень помогает старым людям',
+                        picture        : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
                         id           : 27
                     },          
                 ]
@@ -248,8 +247,12 @@
                         this.imageUrl  = '';
                     }
             },
-            checkService(){
-                this.currentService = this.objService.service;
+            async checkService(){
+                this.currentService = this.objService.group;
+                this.currentIdGroup = this.objService. id;
+
+                let newGroup = await requestService.readOneService(this.objService.id); 
+
             },
             checkGroup(){
                 this.currentId    = this.objGroup.id;
@@ -259,6 +262,9 @@
                 this.dialog         = true;
                 this.currentIndexOf = -1;
 
+                this.showFieldEdit       = false;
+                this.showFieldAddService = true;
+
                 this.currentService      = '';
                 this.currentGroup        = '';
                 this.currentPrice        = '';
@@ -267,35 +273,38 @@
                 this.currentIdItem       = '';
             },
             editItem (item) {
-                this.dialog         = true;
+                this.dialog              = true;
+                this.showFieldEdit       = true;
+                this.showFieldAddService = false;
+
                 this.currentIndexOf = this.desserts.indexOf(item);
 
                 this.currentService      = item.service;
                 this.currentGroup        = item.group;
                 this.currentPrice        = item.price;
-                this.currentAboutService = item.aboutService;
-                this.currentPhoto        = item.photo;
+                this.currentAboutService = item.about_service;
+                this.currentPhoto        = item.picture;
                 this.currentIdItem       = item.id;
-               
             },
 
-            deleteItem (item) {
+            async deleteItem (item) {
                 const index = this.desserts.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+                this.desserts.splice(index, 1);
+                await requestService.deleteService(item.id);
             },
 
             close () {
                 this.dialog = false
             },
 
-            save () {
+            async save () {
                 let newObj = {
-                    service      : this.currentService,
-                    group        : this.currentGroup,
-                    price        : this.currentPrice,
-                    aboutService : this.currentAboutService,
-                    photo        : this.currentPhoto,
-                    id           : this.currentIdItem
+                    service        : this.currentNewService,
+                    group          : this.currentService,
+                    price          : this.currentPrice,
+                    about_service  : this.currentAboutService,
+                    picture        : this.currentPhoto,
+                    id_group       : this.currentIdGroup
                 };
 
                 if (this.currentIndexOf > -1) {
@@ -308,7 +317,21 @@
                 };
                     Object.assign(this.desserts[this.currentIndexOf], newObj)
                 } else {
-                    this.desserts.push(newObj)
+                    this.desserts.push(newObj);
+
+                    console.log(newObj)
+
+                    let newObjForServer = {
+                        service: this.currentNewService,
+                        id_group: this.currentIdGroup,
+                        price: this.currentPrice,
+                        picture: this.currentPhoto,
+                        about_service: this.currentAboutService
+                    }
+
+                    console.log(newObjForServer)
+                    await requestService.addService(newObjForServer);
+
                 }
 
                  this.close()
