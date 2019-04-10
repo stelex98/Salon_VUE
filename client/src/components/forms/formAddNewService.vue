@@ -43,7 +43,7 @@
                                         v-model    = 'objGroup'
                                         :items     = 'groupArr'
                                         item-value = 'id'
-                                        item-text  = 'group'
+                                        item-text  = 'service'
                                         :label     = "currentGroup"
                                         @input     = 'checkGroup()'
                                          return-object
@@ -145,7 +145,7 @@
                 dialog              : false,
                 imageName           : '',
                 imageFile           : '',
-                urlImage            : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
+                urlImage            : '',
                 dialog              : false,
                 showFieldAddService : false,
                 showFieldEdit       : false,
@@ -193,32 +193,15 @@
             this.initialize();
 
             let allService = await requestService.readAllServices();
-            this.desserts = allService.data;
+            this.desserts  = allService.data;
 
             let groupService = await requestService.readGroups();
-            this.serviceArr = groupService.data;
+            this.serviceArr  = groupService.data;
         },
 
         methods: {
             initialize () {
-                this.desserts = [
-                    {
-                        service      : 'СПА',
-                        group        : 'СПА-массаж',
-                        price        : 25,
-                        about_service : 'Клевый массаж',
-                        picture        : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
-                        id           : 10
-                    },
-                    {
-                        service      : 'Массаж',
-                        group        : 'Массаж тела',
-                        price        : 30,
-                        about_service : 'Массаж тела очень помогает старым людям',
-                        picture        : `https://unsplash.it/150/300?image=${Math.floor(Math.random() * 100) + 1}`,
-                        id           : 27
-                    },          
-                ]
+                this.desserts = []
             },
             pickFile () {
                 this.$refs.image.click();
@@ -249,14 +232,14 @@
             },
             async checkService(){
                 this.currentService = this.objService.group;
-                this.currentIdGroup = this.objService. id;
+                this.currentIdGroup = this.objService.id;
 
-                let newGroup = await requestService.readOneService(this.objService.id); 
-
+                let newGroup  = await requestService.readServiceByType(this.objService.id); 
+                this.groupArr = Object.values(newGroup.data);
             },
             checkGroup(){
                 this.currentId    = this.objGroup.id;
-                this.currentGroup = this.objGroup.group;
+                this.currentGroup = this.objGroup.service;
             },
             addNewService(){
                 this.dialog         = true;
@@ -279,22 +262,28 @@
 
                 this.currentIndexOf = this.desserts.indexOf(item);
 
-                this.currentService      = item.service;
-                this.currentGroup        = item.group;
+                this.currentService      = item.group;
+                this.currentGroup        = item.service;
                 this.currentPrice        = item.price;
                 this.currentAboutService = item.about_service;
                 this.currentPhoto        = item.picture;
                 this.currentIdItem       = item.id;
+                this.currentIdGroup      = item.id_group;
+                this.urlImage            = item.picture;
             },
 
             async deleteItem (item) {
                 const index = this.desserts.indexOf(item)
                 this.desserts.splice(index, 1);
+
                 await requestService.deleteService(item.id);
             },
 
             close () {
-                this.dialog = false
+                this.dialog     = false;
+                 
+                this.objService = '';
+                this.objGroup   = '';
             },
 
             async save () {
@@ -309,32 +298,38 @@
 
                 if (this.currentIndexOf > -1) {
                     let updObj = {
-                        id_group      : this.currentId,
+                        id_group      : this.currentIdGroup,
                         service       : this.currentService,
+                        group         : this.currentGroup,
                         price         : this.currentPrice,
                         about_service : this.currentAboutService,
                         picture       : this.currentPhoto
-                };
-                    Object.assign(this.desserts[this.currentIndexOf], newObj)
+                    };
+                    let objForServer = {
+                        service       : this.currentGroup,
+                        id_group      : this.currentIdGroup,
+                        price         : this.currentPrice,
+                        picture       : this.currentPhoto,
+                        about_service : this.currentAboutService
+                    }
+
+                    Object.assign(this.desserts[this.currentIndexOf], updObj);
+
+                    let checkAnsw = requestService.updateService(this.currentIdItem, objForServer);
                 } else {
                     this.desserts.push(newObj);
 
-                    console.log(newObj)
-
                     let newObjForServer = {
-                        service: this.currentNewService,
-                        id_group: this.currentIdGroup,
-                        price: this.currentPrice,
-                        picture: this.currentPhoto,
-                        about_service: this.currentAboutService
+                        service       : this.currentNewService,
+                        id_group      : this.currentIdGroup,
+                        price         : this.currentPrice,
+                        picture       : this.currentPhoto,
+                        about_service : this.currentAboutService
                     }
 
-                    console.log(newObjForServer)
                     await requestService.addService(newObjForServer);
-
                 }
-
-                 this.close()
+                this.close()
             }
         }
     }
