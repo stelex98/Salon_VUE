@@ -12,24 +12,24 @@ const session         = require('express-session');
 const RedisStore      = require('connect-redis')(session);
 
 
-const client  = redis.createClient();
+// const client  = redis.createClient();
 const app     = express();
 
 app.use(cookieParser());
-app.use(session({
-  store: new RedisStore({ host: 'localhost', port: 6379, client: client, ttl: 600}),
-  secret: 'supersecret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, maxAge:86400000 }
-}));
+// app.use(session({
+//   store: new RedisStore({ host: 'localhost', port: 6379, client: client, ttl: 600}),
+//   secret: 'supersecret',
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: { secure: false, maxAge:86400000 }
+// }));
 
-app.use(function (req, res, next) {
-  if (!req.session) {
-    return next(new Error('oh no'))
-  }
-  next()
-})
+// app.use(function (req, res, next) {
+//   if (!req.session) {
+//     return next(new Error('oh no'))
+//   }
+//   next()
+// })
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
