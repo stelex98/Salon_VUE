@@ -63,12 +63,12 @@ router.post('/signInByCredential', async function(req, res) {
 
 			if(helper.checkPassword(user.password, user.salt, req.body.pass, req.body.salt)){
 				
-				// req.session.login = user.login;
-				// req.session.cid    = user.id;
-				// req.session.role  = user.role;
+				req.session.login = user.login; //edit
+				req.session.cid    = user.id;
+				req.session.role  = user.role; //*
 				
 				role = user.role;
-				//req.session.save();
+				req.session.save(); // edit
 			}	
 		}
 		res.send(role);
