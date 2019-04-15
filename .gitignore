@@ -2,3 +2,4 @@ node_modules
 client/node_modules
 knexfile.js
 client/public/picture
+.DS_Store

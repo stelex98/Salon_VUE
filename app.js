@@ -12,11 +12,11 @@ const session         = require('express-session');
 const RedisStore      = require('connect-redis')(session);
 
 
-const client  = redis.createClient();
+const client  = redis.createClient(); // edit
 const app     = express();
 
 app.use(cookieParser());
-app.use(session({
+app.use(session({ // edit
   store: new RedisStore({ host: 'localhost', port: 6379, client: client, ttl: 600}),
   secret: 'supersecret',
   resave: false,
@@ -29,7 +29,7 @@ app.use(function (req, res, next) {
     return next(new Error('oh no'))
   }
   next()
-})
+}) //*
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));

@@ -37,6 +37,11 @@ function readAllServices() {
                .orderBy(['group.id', 'service.id']);
 }
 
+function numItemsService() {
+    return knex.count('id')
+               .from('service')
+}
+
 //-------------------SELECT--------------------
 
 function readOneService(id) {
@@ -91,4 +96,5 @@ module.exports = {
     readGroups,
     updateService,
     deleteService,
+    numItemsService
 };
