@@ -29,11 +29,13 @@
                             :key  = "`services${i}`"
                         >
                             <v-select
-                                :items  = "item.itemServices"
-                                :id     = "`${i}`"
-                                :label  = "item.globalName"
-                                @change = "returnDescribe($event)"
-                                v-model = "selected"
+                                :items     = "item.itemServices"
+                                item-value = 'id'
+                                item-text  = 'service'        
+                                :label     = "item.globalName"
+                                @change    = "returnDescribe(selected.id)"
+                                v-model    = "selected"
+                                return-object
                             ></v-select>
                         </v-flex>
                     </v-layout>
@@ -135,7 +137,6 @@ export default {
         groupedServices.forEach( (item, i) => {
             groupedServices[i].push(this.globalNameServices[i])
         });
-
         groupedServices.forEach((item, i) => {
             let obj = {
                 globalName   : '',
@@ -145,13 +146,13 @@ export default {
             obj.globalName = item[item.length - 1];
 
             item.forEach( (item_2, i, array) => {
-                typeof(item_2) === 'object' ? obj.itemServices.push(item_2.service) : '';
+                typeof(item_2) === 'object' ? obj.itemServices.push(item_2) : '';
                 typeof(item_2) === 'object' ? obj.id_group = item_2.id_group : '';
             });
 
             arrObj.push(obj);
-        })
- 
+        });
+
         this.allService = arrObj;
     },
   computed: {
@@ -170,13 +171,12 @@ export default {
   },
   methods: {
     async returnDescribe(currentService) {
-        //тут поменять название сервиса на id
         let serviceDescribe = await request.readOneService(currentService);
-        
-        this.describe[0].describe = serviceDescribe.data[0].about_service;
-        this.describe[0].price    = serviceDescribe.data[0].price;
-        this.describe[0].title    = serviceDescribe.data[0].service;
-        this.describe[0].img      = serviceDescribe.data[0].picture;
+
+        this.describe[0].describe = serviceDescribe.data.about_service;
+        this.describe[0].price    = serviceDescribe.data.price;
+        this.describe[0].title    = serviceDescribe.data.service;
+        this.describe[0].img      = serviceDescribe.data.picture;
     }
   }
 };
