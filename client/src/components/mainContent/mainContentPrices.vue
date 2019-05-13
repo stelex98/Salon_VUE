@@ -95,6 +95,7 @@ export default {
     this.addPriceIntoState(arrPrice);
     this.headers.push(this.arrayPriceHeaders);
     this.desserts.push(this.arrayPriceDesserts);
+    console.log(this.headers, this.desserts);
   },
     computed: {
         ...mapState("price", {

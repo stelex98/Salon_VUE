@@ -82,6 +82,7 @@
 						<v-btn 
 							class = "transparent black--text" 
 							v-if  = "!returnDataCheckAuthorization"
+							to 	  = "/userAccount"
 						>
 								Личный кабинет
 						</v-btn>

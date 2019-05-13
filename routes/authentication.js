@@ -56,6 +56,7 @@ router.post('/signUp', async function(req, res) {
 
 router.post('/signInByCredential', async function(req, res) {
 	try{
+		console.log(req.body);
 		let user = (await queries.checkLogin(req.body.log))[0];
 		let role = null;
 
@@ -63,12 +64,12 @@ router.post('/signInByCredential', async function(req, res) {
 
 			if(helper.checkPassword(user.password, user.salt, req.body.pass, req.body.salt)){
 				
-				req.session.login = user.login; //edit
-				req.session.cid    = user.id;
-				req.session.role  = user.role; //*
+				// req.session.login = user.login; //edit
+				// req.session.cid    = user.id;
+				// req.session.role  = user.role; //*
 				
 				role = user.role;
-				req.session.save(); // edit
+				// req.session.save(); // edit
 			}	
 		}
 		res.send(role);

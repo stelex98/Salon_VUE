@@ -8,6 +8,8 @@ import AppPrices from '@/views/mainPages/AppPrices.vue'
 import AppReviews from '@/views/mainPages/AppReviews.vue'
 import AppStock from '@/views/mainPages/AppStock.vue'
 import AppAdminPage from '@/views/mainPages/AppAdminPage.vue'
+import AppPersonalAccountUser from '@/views/mainPages/AppPersonalAccountUser.vue'
+import AppPersonalAccountAdmin from '@/views/mainPages/AppPersonalAccountAdmin.vue'
 
 
 Vue.use(Router)
@@ -48,6 +50,16 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: AppAdminPage
+    },
+    {
+      path: '/userAccount',
+      name: 'userAccount',
+      component: AppPersonalAccountUser
+    },
+    {
+      path: '/masterAccount',
+      name: 'masterAccount',
+      component: AppPersonalAccountAdmin
     }
   ],
   mode: 'history'
